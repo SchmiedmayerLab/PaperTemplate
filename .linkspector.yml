@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+
+dirs:
+  - .
+useGitIgnore: true
+ignorePatterns:
+  - pattern: '^doc:.*$'
+  - pattern: '^http://localhost.*$'
+  - pattern: '^http://127\.0\.0\.1.*$'
+replacementPatterns:
+  - pattern: '(.*)#gh-dark-mode-only'
+    replacement: '$1'
+  - pattern: '(.*)#gh-light-mode-only'
+    replacement: '$1'

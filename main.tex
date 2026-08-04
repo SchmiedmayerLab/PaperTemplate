@@ -1,0 +1,43 @@
+% SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+%
+% SPDX-License-Identifier: MIT
+
+\documentclass[11pt]{article}
+
+\input{paper/setup/packages}
+\input{paper/setup/optional-packages}
+\input{paper/setup/metadata}
+\input{paper/setup/commands}
+\input{paper/setup/acronyms}
+\input{paper/setup/venue}
+
+\title{\papertitle}
+\author{\paperauthors}
+\date{\paperdate}
+
+\begin{document}
+
+\maketitle
+
+\subfile{paper/sections/00_abstract}
+
+% Treat the abstract as a standalone acronym unit.
+\glsresetall
+
+\subfile{paper/sections/10_introduction}
+\subfile{paper/sections/20_related_work}
+\subfile{paper/sections/30_methods}
+\subfile{paper/sections/40_results}
+\subfile{paper/sections/50_discussion}
+\subfile{paper/sections/60_conclusion}
+\subfile{paper/sections/70_data_and_code_availability}
+\subfile{paper/sections/80_declarations}
+\subfile{paper/sections/90_acknowledgments}
+
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+\appendix
+\subfile{paper/supplement/supplement}
+
+\end{document}

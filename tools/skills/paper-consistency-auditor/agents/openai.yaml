@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+
+interface:
+  display_name: "Paper Consistency Auditor"
+  short_description: "Audit claims, terms, citations, and artifacts"
+  default_prompt: "Use $paper-consistency-auditor to find cross-document inconsistencies before submission."

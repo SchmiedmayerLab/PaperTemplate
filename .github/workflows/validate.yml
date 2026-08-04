@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+
+name: Validate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  repository-checks:
+    name: Repository Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Check trailing whitespace
+        run: |
+          if git grep -nI '[[:blank:]]$' -- .; then
+            echo "Trailing whitespace found."
+            exit 1
+          fi
+      - name: Run repository checks
+        run: make check
+      - name: Reproduce public artifacts
+        run: make reproduce
+
+  latex:
+    name: Build LaTeX Manuscript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Reproduce public artifacts
+        run: make reproduce
+      - name: Build manuscript
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          args: -pdf -interaction=nonstopmode -halt-on-error -file-line-error
+          texlive_version: 2026
+      - name: Upload manuscript
+        uses: actions/upload-artifact@v7
+        with:
+          name: manuscript
+          path: build/main.pdf
+          if-no-files-found: error
+
+  reuse:
+    name: REUSE Compliance
+    uses: SchmiedmayerLab/.github/.github/workflows/reuse.yml@v0.3
+
+  actionlint:
+    name: Lint GitHub Actions Workflows
+    uses: SchmiedmayerLab/.github/.github/workflows/actionlint.yml@v0.3
+
+  markdown-links:
+    name: Check Markdown Links
+    permissions:
+      contents: read
+      pull-requests: read
+    uses: SchmiedmayerLab/.github/.github/workflows/markdown-links.yml@v0.3

@@ -1,0 +1,71 @@
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+
+# LaTeX build output
+/build/
+*.acn
+*.acr
+*.alg
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.glg
+*.glo
+*.gls
+*.ist
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
+# Generated manuscript and reproduction artifacts
+/main.pdf
+/output/
+/tmp/
+/paper/figures/generated/*
+!/paper/figures/generated/README.md
+/paper/tables/generated/*
+!/paper/tables/generated/README.md
+/research/data/interim/*
+!/research/data/interim/README.md
+/research/data/derived/*
+!/research/data/derived/README.md
+
+# Governed local data; retain only documentation and manifest entries in Git
+/research/data/restricted/*
+!/research/data/restricted/README.md
+
+# Downloaded literature and local workflow state
+/research/literature/**/source.pdf
+/research/literature/.download_state.json
+/references.regenerated.bib
+
+# Unstructured local source material; retain only the directory guidance
+/project/source-materials/*
+!/project/source-materials/README.md
+
+# Language, notebook, and operating-system artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.RData
+.Rhistory
+.DS_Store
+.venv/
+
+# Editor and agent session state
+.idea/
+.vscode/
+.claude/
+.codex/

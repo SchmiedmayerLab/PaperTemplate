@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+
+interface:
+  display_name: "Paper Section Refiner"
+  short_description: "Revise one manuscript section with bounded claims"
+  default_prompt: "Use $paper-section-refiner to revise this section while preserving evidence, scope, and source conventions."

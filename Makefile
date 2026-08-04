@@ -1,0 +1,71 @@
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+
+PYTHON := PYTHONDONTWRITEBYTECODE=1 python3
+SUBFILE ?= paper/sections/10_introduction.tex
+
+.PHONY: all ci doctor submodules submodule-check pdf subfile subfile-clean check reproducibility-check reproduce submission-check references word-count license-check links compliance clean distclean
+
+all: check reproduce pdf
+
+ci: check reproduce pdf
+
+doctor:
+	$(PYTHON) tools/scripts/check_tools.py
+
+submodules:
+	git submodule update --init --recursive
+
+submodule-check:
+	$(PYTHON) tools/scripts/check_submodules.py
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+
+subfile:
+	latexmk -cd -pdf -interaction=nonstopmode -halt-on-error -file-line-error -auxdir=../../build -outdir=../../build $(SUBFILE)
+
+subfile-clean:
+	latexmk -cd -C -auxdir=../../build -outdir=../../build $(SUBFILE)
+
+check:
+	$(PYTHON) -m unittest discover -s tools/tests
+	$(PYTHON) tools/scripts/check_project.py
+	$(PYTHON) tools/scripts/check_submodules.py
+	$(PYTHON) tools/scripts/check_reproducibility.py
+	$(PYTHON) tools/scripts/regenerate_bib_from_references.py --check
+
+reproducibility-check:
+	$(PYTHON) tools/scripts/check_reproducibility.py
+
+reproduce:
+	$(PYTHON) tools/scripts/check_reproducibility.py --run
+
+submission-check:
+	$(PYTHON) tools/scripts/check_project.py --submission
+	$(PYTHON) tools/scripts/regenerate_bib_from_references.py --check
+	$(PYTHON) tools/scripts/check_reproducibility.py --submission --run
+	latexmk -C main.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+
+references:
+	$(PYTHON) tools/scripts/regenerate_bib_from_references.py --in-place
+	$(PYTHON) tools/scripts/organize_references.py --report-only
+
+word-count:
+	texcount -inc -sum main.tex
+
+license-check:
+	reuse --no-multiprocessing lint
+
+links:
+	linkspector check
+
+compliance: license-check links
+
+clean:
+	latexmk -c main.tex
+
+distclean:
+	latexmk -C main.tex

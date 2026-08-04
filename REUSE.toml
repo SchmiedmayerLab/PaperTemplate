@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+
+version = 1
+
+# Format-constrained generated or legal files cannot carry inline SPDX headers.
+[[annotations]]
+path = [
+    "LICENSE",
+    "research/data/manifest.tsv",
+    "research/reproducibility/submodules.tsv",
+    "project/notes/06_reference_inventory.md",
+    "references.bib",
+    "research/reproducibility/pipeline.json",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Stanford University and the project authors (see CONTRIBUTORS.md)"
+SPDX-License-Identifier = "MIT"

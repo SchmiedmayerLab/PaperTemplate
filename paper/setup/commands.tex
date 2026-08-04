@@ -1,0 +1,17 @@
+% SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+%
+% SPDX-License-Identifier: MIT
+
+% Prefer semantic commands here over repeated visual formatting in section files.
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\software}[1]{#1}
+\newcommand{\dataset}[1]{#1}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:#1}}
+
+\ifpaperdraft
+  \newcommand{\papertodo}[1]{\textcolor{draftred}{\textbf{[TODO: #1]}}}
+\else
+  \newcommand{\papertodo}[1]{\PackageError{paper-template}{Unresolved TODO in final mode}{Resolve the TODO before compiling a submission artifact.}}
+\fi
+
+\newcommand{\placeholder}[1]{\papertodo{#1}}

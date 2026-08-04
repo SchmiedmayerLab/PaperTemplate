@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+
+interface:
+  display_name: "Paper Literature Scout"
+  short_description: "Find and verify claim-specific primary sources"
+  default_prompt: "Use $paper-literature-scout to identify and verify the strongest sources for this manuscript."

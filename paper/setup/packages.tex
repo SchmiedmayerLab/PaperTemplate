@@ -1,0 +1,38 @@
+% SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+%
+% SPDX-License-Identifier: MIT
+
+% Generic pdfLaTeX drafting profile.
+% These defaults are not guaranteed to be compatible with publisher classes.
+% Remove unused packages and put publisher-specific overrides in paper/setup/venue.tex.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{threeparttable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{subfiles}
+\usepackage[round,authoryear]{natbib}
+\usepackage[acronym,nonumberlist,nopostdot]{glossaries-extra}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+\graphicspath{{paper/figures/generated/}}
+\setabbreviationstyle[acronym]{long-short}
+\glsdisablehyper
+\urlstyle{same}
+\emergencystretch=2em
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\setlist{nosep,leftmargin=*}
+
+\definecolor{draftred}{HTML}{A61B1B}
