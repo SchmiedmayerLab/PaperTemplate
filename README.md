@@ -1,10 +1,17 @@
 <!--
-SPDX-FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)
+
+This source file is part of the Paper Template open-source project
+
+SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)
 
 SPDX-License-Identifier: MIT
+
 -->
 
-# Scientific Paper Template
+# Paper Template
+
+[![Build and Test](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml/badge.svg)](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 
 This repository is a reusable starting point for scientific and technical papers written in LaTeX.
 It combines modular manuscript source, source-first references, a declared data-to-artifact pipeline, durable editorial context, repository-local agent skills, and submission checks.
@@ -160,15 +167,21 @@ Do not install these skills into a personal skill directory without the user's r
 - `project/guides/customization-checklist.md` identifies drafting defaults that each paper must replace or verify.
 - `project/guides/venue-adaptation.md` covers the final journal migration.
 
+## Contributing
+
+Contributions to this project are welcome. Please make sure to read the [contribution guidelines](https://github.com/SchmiedmayerLab/.github/blob/main/CONTRIBUTING.md) and the [contributor covenant code of conduct](https://github.com/SchmiedmayerLab/.github/blob/main/CODE_OF_CONDUCT.md) first. You can find a list of contributors in the [CONTRIBUTORS.md](CONTRIBUTORS.md) file.
+
 ## License
 
-This project is licensed under the MIT License.
-See [Licenses](LICENSES) and [Contributors](CONTRIBUTORS.md) for more information.
-Third-party venue files, publications, data, and assets retain their own licenses and must be annotated separately.
+This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for more information.
+
+## Citation
+
+If you use this software, please cite it using the metadata in [CITATION.cff](CITATION.cff), which GitHub surfaces through the [*Cite this repository*](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files) button.
 
 ## Our Research
 
 For more information, visit the [Schmiedmayer Lab GitHub organization](https://github.com/SchmiedmayerLab).
 
-![Stanford and Stanford Medicine logos](https://raw.githubusercontent.com/SchmiedmayerLab/.github/main/assets/stanford-footer-light.png#gh-light-mode-only)
-![Stanford and Stanford Medicine logos](https://raw.githubusercontent.com/SchmiedmayerLab/.github/main/assets/stanford-footer-dark.png#gh-dark-mode-only)
+![Schmiedmayer Lab](https://raw.githubusercontent.com/SchmiedmayerLab/.github/main/assets/footer-light.png#gh-light-mode-only)
+![Schmiedmayer Lab](https://raw.githubusercontent.com/SchmiedmayerLab/.github/main/assets/footer-dark.png#gh-dark-mode-only)
