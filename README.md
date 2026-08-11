@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 # Paper Template
 
 [![Build and Test](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml/badge.svg)](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/SchmiedmayerLab/PaperTemplate/blob/main/LICENSE.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 
 This repository is a reusable starting point for scientific and technical papers written in LaTeX.
 It combines modular manuscript source, source-first references, a declared data-to-artifact pipeline, durable editorial context, repository-local agent skills, and submission checks.
