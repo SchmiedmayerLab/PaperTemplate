@@ -15,7 +15,19 @@ from pathlib import Path
 SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from reference_common import Citation, citation_to_bib, derive_key, ensure_claims, extract_pdf_from_oa_archive, parse_bib, parse_nbib, parse_ris, split_bib_entries, write_abstract
+from reference_common import (
+    Citation,
+    citation_to_bib,
+    derive_key,
+    ensure_claims,
+    extract_pdf_from_oa_archive,
+    markdown_display,
+    parse_bib,
+    parse_nbib,
+    parse_ris,
+    split_bib_entries,
+    write_abstract,
+)
 
 
 class ReferenceCommonTests(unittest.TestCase):
@@ -94,6 +106,20 @@ class ReferenceCommonTests(unittest.TestCase):
                 "# Claim Notes for Paper Template",
                 (folder / "claims.md").read_text(encoding="utf-8"),
             )
+
+    def test_markdown_display_preserves_latex_syntax(self) -> None:
+        self.assertEqual(markdown_display("{eGFR} and {FHIR}"), "eGFR and FHIR")
+        self.assertEqual(markdown_display(r"\{A,B\}"), r"\{A,B\}")
+        self.assertEqual(markdown_display(r"\textit{X}"), r"\textit{X}")
+        self.assertEqual(
+            markdown_display(r"{Sets \{A,B\} and \textit{{X}}}"),
+            r"Sets \{A,B\} and \textit{X}",
+        )
+        self.assertEqual(
+            markdown_display(r"\href{https://example.org}{Project {X}}"),
+            r"\href{https://example.org}{Project X}",
+        )
+        self.assertEqual(markdown_display("{unbalanced"), "{unbalanced")
 
     def test_single_line_crossref_bibtex(self) -> None:
         citation = parse_bib(
