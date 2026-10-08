@@ -1,0 +1,17 @@
+% SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)
+%
+% SPDX-License-Identifier: MIT
+
+% The standalone manuscript uses the polished preprint presentation by default.
+% A thin venue root can define \papervenuebuild before it inputs main.tex to
+% bypass every preprint-specific package and style choice.
+% It can also define \papernatbiboptions before loading main.tex when the venue
+% requires a citation mode other than the journal-neutral numeric default.
+\providecommand{\papernatbiboptions}{square,numbers,sort&compress}
+
+\newif\ifpaperpreprintlayout
+\ifdefined\papervenuebuild
+  \paperpreprintlayoutfalse
+\else
+  \paperpreprintlayouttrue
+\fi

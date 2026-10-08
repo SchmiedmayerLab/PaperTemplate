@@ -295,6 +295,11 @@ def brace(value: str) -> str:
     return value
 
 
+def markdown_display(value: str) -> str:
+    """Remove BibTeX case-protection braces from generated Markdown text."""
+    return value.replace("{", "").replace("}", "")
+
+
 def citation_to_bib(citation: Citation, key: str) -> str:
     if citation.raw_bib:
         return re.sub(
@@ -328,6 +333,7 @@ def citation_to_bib(citation: Citation, key: str) -> str:
 
 
 def abstract_markdown(citation: Citation, key: str, source_name: str) -> str:
+    title = markdown_display(citation.title or key)
     authors = "; ".join(citation.authors) if citation.authors else "Not available in citation export"
     abstract = citation.abstract or "Abstract not available in the citation export."
     identifiers = []
@@ -339,7 +345,7 @@ def abstract_markdown(citation: Citation, key: str, source_name: str) -> str:
         identifiers.append(f"PMCID: `{citation.pmcid}`")
     identifier_text = "; ".join(identifiers) or "No persistent identifier found in citation export."
     return (
-        f"# {citation.title or key}\n\n"
+        f"# {title}\n\n"
         f"- Citation key: `{key}`\n"
         f"- Authors: {authors}\n"
         f"- Venue: {citation.journal or 'Not available'}\n"
@@ -358,13 +364,14 @@ def write_abstract(folder: Path, citation: Citation, key: str, source_name: str)
 
 
 def claims_markdown(citation: Citation, key: str) -> str:
+    title = markdown_display(citation.title or key)
     return (
         "<!--\n\n"
         "This source file is part of a scientific paper repository based on the Scientific Paper Template\n\n"
-        "SPDX-" "FileCopyrightText: 2026 Stanford University and the project authors (see CONTRIBUTORS.md)\n\n"
+        "SPDX-" "FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)\n\n"
         "SPDX-" "License-Identifier: MIT\n\n"
         "-->\n\n"
-        f"# Claim Notes for {citation.title or key}\n\n"
+        f"# Claim Notes for {title}\n\n"
         f"- Citation key: `{key}`\n\n"
         "## Verified manuscript support\n\n"
         "- TODO: Record the exact manuscript claim and the page, section, table, or figure that supports it.\n\n"

@@ -26,6 +26,10 @@ class ReferenceCommonTests(unittest.TestCase):
             write_abstract(folder, citation, "example2026source", "citation.bib")
             ensure_claims(folder, citation, "example2026source")
             claims_path = folder / "claims.md"
+            self.assertIn(
+                "SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors",
+                claims_path.read_text(encoding="utf-8"),
+            )
             claims_path.write_text("durable manuscript note\n", encoding="utf-8")
             citation.abstract = "Refreshed abstract."
             write_abstract(folder, citation, "example2026source", "citation.bib")
@@ -76,6 +80,20 @@ class ReferenceCommonTests(unittest.TestCase):
         self.assertIn("@inproceedings{example2024tool,", generated)
         self.assertIn("booktitle", generated)
         self.assertIn("eprint", generated)
+
+    def test_protected_bibtex_title_is_clean_in_generated_markdown(self) -> None:
+        citation = parse_bib(
+            "@misc{oldKey, author={Schmiedmayer, Paul}, title={{Paper Template}}, year={2026}}"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            write_abstract(folder, citation, "schmiedmayer2026papertemplate", "citation.bib")
+            ensure_claims(folder, citation, "schmiedmayer2026papertemplate")
+            self.assertTrue((folder / "abstract.md").read_text(encoding="utf-8").startswith("# Paper Template\n"))
+            self.assertIn(
+                "# Claim Notes for Paper Template",
+                (folder / "claims.md").read_text(encoding="utf-8"),
+            )
 
     def test_single_line_crossref_bibtex(self) -> None:
         citation = parse_bib(

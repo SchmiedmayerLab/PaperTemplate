@@ -4,12 +4,13 @@
 
 PYTHON := PYTHONDONTWRITEBYTECODE=1 python3
 SUBFILE ?= paper/sections/10_introduction.tex
+PREVIEW := paper/preprint-preview.tex
 
-.PHONY: all ci doctor submodules submodule-check pdf subfile subfile-clean check reproducibility-check reproduce submission-check references word-count license-check links compliance clean distclean
+.PHONY: all ci doctor submodules submodule-check pdf preview-pdf subfile subfile-clean check reproducibility-check reproduce submission-check references word-count license-check links compliance clean distclean
 
 all: check reproduce pdf
 
-ci: check reproduce pdf
+ci: check reproduce pdf preview-pdf
 
 doctor:
 	$(PYTHON) tools/scripts/check_tools.py
@@ -22,6 +23,9 @@ submodule-check:
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+
+preview-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error $(PREVIEW)
 
 subfile:
 	latexmk -cd -pdf -interaction=nonstopmode -halt-on-error -file-line-error -auxdir=../../build -outdir=../../build $(SUBFILE)
@@ -66,6 +70,8 @@ compliance: license-check links
 
 clean:
 	latexmk -c main.tex
+	latexmk -c $(PREVIEW)
 
 distclean:
 	latexmk -C main.tex
+	latexmk -C $(PREVIEW)

@@ -1,0 +1,141 @@
+% SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)
+%
+% SPDX-License-Identifier: MIT
+
+% A self-contained design specimen for the default preprint presentation.
+% The prose, diagram, and table are illustrative and do not report study results.
+
+\documentclass[11pt]{article}
+
+\input{paper/setup/profile}
+\input{paper/setup/packages}
+\input{paper/setup/optional-packages}
+\input{paper/setup/metadata}
+
+\renewcommand{\papertitle}{A Reproducible Workflow for Evidence-Centered Scientific Papers}
+\renewcommand{\paperpdftitle}{A Reproducible Workflow for Evidence-Centered Scientific Papers}
+\renewcommand{\shorttitle}{Evidence-Centered Scientific Papers}
+\renewcommand{\paperrepositoryurl}{https://github.com/SchmiedmayerLab/PaperTemplate}
+\renewcommand{\paperrepositorylabel}{github.com/SchmiedmayerLab/PaperTemplate}
+\renewcommand{\papercodelicense}{MIT}
+\renewcommand{\paperkeywords}{scientific writing; reproducibility; LaTeX; research software}
+\renewcommand{\papersubject}{Design preview for the PaperTemplate preprint presentation}
+\paperdraftfalse
+
+\input{paper/setup/commands}
+\input{paper/setup/acronyms}
+\ifpaperpreprintlayout
+  \input{paper/setup/preprint}
+\fi
+\input{paper/setup/venue}
+
+\title{\papertitle}
+\author{\paperauthors}
+\date{\paperdate}
+
+\newcommand{\previewstage}[2]{%
+  \begin{minipage}[c][0.78in][c]{0.225\textwidth}
+    \centering
+    {\sffamily\bfseries\color{paperink}#1\par}
+    \vspace{0.18em}
+    {\color{paperrule}\rule{0.82\linewidth}{0.5pt}\par}
+    \vspace{0.20em}
+    {\sffamily\footnotesize\color{papermuted}#2\par}
+  \end{minipage}%
+}
+\newcommand{\previewarrow}{\textcolor{paperaccent}{\large$\longrightarrow$}}
+\newcolumntype{Y}{>{\RaggedRight\hyphenpenalty=10000\arraybackslash}X}
+
+\begin{document}
+
+\makepaperfrontmatter
+
+\begin{paperabstract}
+This document demonstrates the standalone preprint presentation supplied with the PaperTemplate repository.
+The design uses a compact title block, a visible repository link, an integrated abstract, and restrained running elements.
+It keeps figures and tables visually prominent while preserving a conventional single-column reading experience.
+The accompanying repository separates manuscript content, evidence, computation, and venue adaptation so each layer remains reviewable.
+\paperkeywordsblock
+\end{paperabstract}
+
+\section{Introduction}
+
+A preprint should look deliberate without resembling a product brochure or a publisher imitation.
+The default presentation therefore relies on editorial typography and measured spacing rather than institutional branding, mascots, or decorative panels.
+
+The scientific text remains independent of the presentation layer.
+Authors can retain this design for circulation and preprint release, then disable it when an official venue class controls the submitted manuscript.
+
+% [schmiedmayer2026papertemplate; CITATION.cff and project/guides/reference-workflow.md]: identifies the software repository and its included source-first reference workflow.
+The template source and its reference workflow are distributed together in the Paper Template software repository~\citep{schmiedmayer2026papertemplate}.
+
+All prose, labels, and values in this specimen are illustrative.
+The document exists to make the visual system inspectable before it is used for a real paper.
+
+\section{A restrained visual system}
+
+\subsection{Typography and hierarchy}
+
+XCharter carries the title, headings, body text, and captions so the manuscript retains a coherent scholarly voice.
+Source Sans Pro is limited to metadata, running elements, and figure labels.
+Dark ink carries the argument, muted gray handles secondary information, and Stanford cardinal is reserved for small navigational cues and links.
+
+\begin{center}
+  \begin{minipage}{\textwidth}
+    \centering
+    \previewstage{Evidence}{Sources, data, and decisions}
+    \hfill\previewarrow\hfill
+    \previewstage{Analysis}{Tracked and repeatable steps}
+    \hfill\previewarrow\hfill
+    \previewstage{Paper}{Claims, figures, and tables}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{The template keeps the path from evidence to publication visible and reviewable.}
+    \label{fig:preview-workflow}
+  \end{minipage}
+\end{center}
+
+\subsection{Front matter that starts the paper}
+
+The first page identifies the title, authors, affiliations, correspondence address, repository, abstract, and keywords without creating a separate cover page.
+Long author lists and venue-specific fields can move to an adapted title block without changing the manuscript sections.
+
+\section{Reproducibility by default}
+
+The repository links foundational inputs, versioned analysis, and publication artifacts.
+Generated figures and tables declare their inputs and commands, while conceptual diagrams retain editable sources.
+
+\begin{center}
+\begin{minipage}{\textwidth}
+  \captionsetup{hypcap=false}
+  \captionof{table}{Default presentation choices and their intended role.}
+  \label{tab:preview-choices}
+  \begin{tabularx}{\textwidth}{@{}>{\sffamily\bfseries\RaggedRight\hyphenpenalty=10000\arraybackslash}p{0.21\textwidth}YY@{}}
+    \toprule
+    Element & Default treatment & Adaptation boundary \\
+    \midrule
+    Front matter & Title, authors, and abstract & Adapt fields to the venue \\
+    Body text & Single column with measured leading & Change in the presentation profile \\
+    Figures and tables & Full-width, reproducible artifacts & Generate from source inputs \\
+    Running elements & Short title, rule, and page number & Disable with the preprint profile \\
+    \bottomrule
+  \end{tabularx}
+\end{minipage}
+\end{center}
+
+The workflow emphasizes three practical checks:
+
+\begin{itemize}
+  \item A clean clone rebuilds public artifacts.
+  \item Every reported value has evidence or an explicit author action.
+  \item Venue changes alter presentation without duplicating content.
+\end{itemize}
+
+\section{Adapting the template}
+
+Presentation profiles control appearance, while article profiles determine scientific structure.
+Venue adapters replace the class, front matter, and bibliography rules without duplicating manuscript content.
+
+\bibliographystyle{\paperbibliographystyle}
+\bibliography{references}
+
+\end{document}

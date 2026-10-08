@@ -284,6 +284,7 @@ Follow `project/guides/reproducibility-workflow.md` for the required layout and 
 - Open each source and verify the title, authors, venue, year, study object or population, design, and exact claim before citing it.
 - Prefer the peer-reviewed version when one exists.
 - Use lowercase surname-year-title citation keys, such as `example2026reproducible`.
+- Unless venue rules override it, use square-bracketed numeric citations, sort and compress grouped citations, and order the bibliography by first citation.
 - Put a nonbreaking space before each citation and place the citation before sentence punctuation.
 - Cite every sentence that independently relies on external evidence.
 - Preserve denominator, population, setting, and time context for quantitative claims.

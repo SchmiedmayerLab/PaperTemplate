@@ -19,12 +19,14 @@ SPDX-License-Identifier: MIT
 2. Record source URL, access date, template version, and license.
 3. Preserve third-party attribution with a file header, `.license` sidecar, or narrow `REUSE.toml` annotation.
 4. Create a branch for venue adaptation when the generic manuscript must remain available.
-5. Replace the `\documentclass` and front matter in `main.tex`.
-6. Disable conflicting packages in `paper/setup/packages.tex`; do not silently load two competing implementations.
-7. Map the abstract, section order, declarations, references, figures, tables, and supplement to venue requirements.
-8. Replace the drafting bibliography style with the official style.
-9. Build from a clean state and inspect both warnings and rendered pages.
-10. Run the venue checklist and confirm the exact upload package.
+5. Create a thin venue root that defines `\papervenuebuild`, `\paperdocumentclass`, `\paperclassoptions`, and any venue-specific `\papernatbiboptions` before it inputs `main.tex`.
+6. Replace front matter through the semantic hooks in `paper/setup/commands.tex` and overrides in `paper/setup/venue.tex`.
+7. Disable conflicting shared packages in `paper/setup/packages.tex`; do not silently load two competing implementations.
+8. Map the abstract, section order, declarations, references, figures, tables, and supplement to venue requirements.
+9. Replace the drafting bibliography style with the official style.
+10. Build the venue artifact and the standalone preprint from a clean state when both versions remain active.
+11. Inspect warnings and every rendered page for each artifact.
+12. Run the venue checklist and confirm the exact upload package.
 
 ## Common migration risks
 
@@ -34,3 +36,4 @@ SPDX-License-Identifier: MIT
 - Bibliography backends, accepted entry fields, and citation commands vary.
 - Official templates may redefine theorem, figure, table, and appendix behavior.
 - Preprint and accepted-manuscript policies may differ from copyright and repository-deposit rules.
+- Presentation-profile metadata that is appropriate for a public preprint may violate double-blind review requirements.
