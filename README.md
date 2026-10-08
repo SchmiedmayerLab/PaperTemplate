@@ -16,14 +16,14 @@ SPDX-License-Identifier: MIT
 This repository is a reusable starting point for scientific and technical papers written in LaTeX.
 It combines modular manuscript source, source-first references, a declared data-to-artifact pipeline, durable editorial context, repository-local agent skills, and submission checks.
 
-The default `article` class and package set form a generic pdfLaTeX drafting profile.
-They are not a guarantee of compatibility with every publisher class.
-The paper's article profile, domain guidance, section structure, and venue adapter should be selected explicitly for each project.
+The default standalone build uses a quiet contemporary-journal presentation with a compact title block, readable single-column typography, and restrained running elements.
+This presentation profile is distinct from the scientific article profiles in `project/guides/article-profiles.md` and is not a guarantee of compatibility with a publisher class.
+The paper's article profile, domain guidance, section structure, and venue adapter should still be selected explicitly for each project.
 
 ## Quick start
 
 1. Copy this repository or publish it as a GitHub template repository.
-2. Update `CONTRIBUTORS.md`, `paper/setup/metadata.tex`, and the repository licensing metadata.
+2. Update `CONTRIBUTORS.md`, every field in `paper/setup/metadata.tex`, and the repository licensing metadata.
 3. Complete `project/notes/00_project_brief.md` and select a profile from `project/guides/article-profiles.md`.
 4. Verify candidate venue rules in `project/notes/01_venue_requirements.md`.
 5. Run `make submodules` when the project uses external repositories.
@@ -34,6 +34,7 @@ The paper's article profile, domain guidance, section structure, and venue adapt
 10. Run `make all` while drafting and `make submission-check` before final circulation.
 
 Required local tools are Python 3.10 or newer and a current TeX distribution with `latexmk` and BibTeX.
+Run `make doctor` to verify the TeX Live packages used by the default preprint presentation.
 The repository scripts use only the Python standard library.
 REUSE and Linkspector are optional locally and enforced by CI when the repository is hosted in the SchmiedmayerLab organization.
 
@@ -43,6 +44,8 @@ The repository has four working areas around two visible manuscript entry points
 
 ```text
 main.tex                 Full-manuscript entry point
+paper/preprint-preview.tex
+                         Self-contained visual specimen for the preprint profile
 references.bib           Generated LaTeX bibliography
 paper/                   Manuscript content and presentation
 research/                Evidence, computation, and reproducibility records
@@ -72,6 +75,7 @@ Run:
 make reproducibility-check
 make reproduce
 make pdf
+make preview-pdf
 make subfile SUBFILE=paper/sections/10_introduction.tex
 ```
 
@@ -114,9 +118,30 @@ make clean
 ```
 
 The PDF is written to `build/main.pdf`.
+The design specimen is written to `build/preprint-preview.pdf`.
 The `subfile` target changes into the source directory before compiling and writes its output to `build/`.
 Use that target rather than invoking `latexmk paper/sections/<file>.tex` from the repository root.
 Build outputs, derived artifacts, local source material, restricted data, and downloaded article PDFs are ignored to avoid stale results, repository bloat, and accidental redistribution.
+
+## Preprint presentation
+
+`main.tex` uses the standalone preprint presentation by default.
+The visual packages are isolated in `paper/setup/preprint-packages.tex`, and the style rules are isolated in `paper/setup/preprint.tex`.
+The profile uses XCharter for the title, headings, manuscript body, and captions.
+Source Sans Pro is limited to metadata, running elements, and figure labels.
+The near-monochrome palette uses Stanford cardinal for small navigational cues and links.
+The standard green ORCID mark appears only beside authors with a configured ORCID iD.
+The presentation contains no institutional logos, decorative icons, proprietary fonts, or copied publisher assets.
+
+Edit the semantic fields in `paper/setup/metadata.tex` rather than changing the title block directly.
+Record a verified ORCID iD for each author who has one; an empty ORCID field remains available as a placeholder and renders no icon.
+Use the optional brand, version, code-license, and DOI-label fields only when they communicate real manuscript metadata.
+The repository label should show a readable path such as `github.com/organization/repository` rather than generic linked text.
+The front matter, abstract, keywords, and bibliography style use hooks defined in `paper/setup/commands.tex` so a venue adapter can replace them without editing scientific section files.
+The journal-neutral drafting default uses square-bracketed numeric citations, sorts and compresses grouped citations, and orders the bibliography by first citation.
+Define `\papernatbiboptions` before loading `main.tex` when a venue requires another `natbib` citation mode.
+Run `make preview-pdf` to render a complete design specimen with illustrative content, a figure, and a table.
+The preview is an ignored review artifact rather than a submission file.
 
 ## Reference workflow
 
@@ -146,6 +171,16 @@ Record verified author instructions in `project/notes/01_venue_requirements.md`.
 Download official class or template files into `paper/venue/` only when their license permits repository storage.
 Adapt the document class and front matter without moving scientific section content.
 Keep compatibility code in `paper/setup/venue.tex` so venue adaptation remains reviewable and reversible.
+Define `\papervenuebuild` in a thin venue root before inputting `main.tex` to bypass the preprint presentation as a single unit.
+The same root can set `\paperdocumentclass` and `\paperclassoptions` before it inputs `main.tex`.
+
+```tex
+\def\papervenuebuild{}
+\def\paperdocumentclass{publisher-class}
+\def\paperclassoptions{}
+\def\papernatbiboptions{round,authoryear}
+\input{main.tex}
+```
 
 Do not infer current venue requirements from an old example submission.
 Do not apply the repository's MIT license to publisher files, external data, downloaded publications, or other third-party assets.

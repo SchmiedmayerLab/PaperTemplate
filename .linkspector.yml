@@ -9,6 +9,8 @@ ignorePatterns:
   - pattern: '^doc:.*$'
   - pattern: '^http://localhost.*$'
   - pattern: '^http://127\.0\.0\.1.*$'
+  # Private repositories return 404 for workflow pages and badges to unauthenticated crawlers.
+  - pattern: '^https://github\.com/[^/]+/[^/]+/actions/workflows/.*$'
 replacementPatterns:
   - pattern: '(.*)#gh-dark-mode-only'
     replacement: '$1'

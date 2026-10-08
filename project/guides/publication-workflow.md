@@ -41,6 +41,7 @@ SPDX-License-Identifier: MIT
 3. Use stable terminology and semantic LaTeX commands.
 4. Keep TODOs concrete and never replace missing evidence with plausible prose.
 5. Build frequently so structural and citation failures stay local.
+6. Use `make preview-pdf` to inspect the standalone presentation with representative front matter, a figure, and a table before applying it to a complete manuscript.
 
 ## 5. Run bounded review passes
 
@@ -62,6 +63,7 @@ Give each agent a non-overlapping scope, raw source paths, and an output contrac
 
 Verify the current official author instructions, record them in `project/notes/01_venue_requirements.md`, and follow `project/guides/venue-adaptation.md`.
 Preserve the generic manuscript structure until the venue-specific build compiles and every section has a clear destination.
+Keep the preprint presentation and the publisher presentation as separate build profiles over the same scientific section files.
 
 ## 8. Freeze a submission candidate
 

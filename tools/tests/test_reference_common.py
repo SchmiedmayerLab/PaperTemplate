@@ -15,7 +15,19 @@ from pathlib import Path
 SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from reference_common import Citation, citation_to_bib, derive_key, ensure_claims, extract_pdf_from_oa_archive, parse_bib, parse_nbib, parse_ris, split_bib_entries, write_abstract
+from reference_common import (
+    Citation,
+    citation_to_bib,
+    derive_key,
+    ensure_claims,
+    extract_pdf_from_oa_archive,
+    markdown_display,
+    parse_bib,
+    parse_nbib,
+    parse_ris,
+    split_bib_entries,
+    write_abstract,
+)
 
 
 class ReferenceCommonTests(unittest.TestCase):
@@ -26,6 +38,10 @@ class ReferenceCommonTests(unittest.TestCase):
             write_abstract(folder, citation, "example2026source", "citation.bib")
             ensure_claims(folder, citation, "example2026source")
             claims_path = folder / "claims.md"
+            self.assertIn(
+                "SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors",
+                claims_path.read_text(encoding="utf-8"),
+            )
             claims_path.write_text("durable manuscript note\n", encoding="utf-8")
             citation.abstract = "Refreshed abstract."
             write_abstract(folder, citation, "example2026source", "citation.bib")
@@ -76,6 +92,34 @@ class ReferenceCommonTests(unittest.TestCase):
         self.assertIn("@inproceedings{example2024tool,", generated)
         self.assertIn("booktitle", generated)
         self.assertIn("eprint", generated)
+
+    def test_protected_bibtex_title_is_clean_in_generated_markdown(self) -> None:
+        citation = parse_bib(
+            "@misc{oldKey, author={Schmiedmayer, Paul}, title={{Paper Template}}, year={2026}}"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            write_abstract(folder, citation, "schmiedmayer2026papertemplate", "citation.bib")
+            ensure_claims(folder, citation, "schmiedmayer2026papertemplate")
+            self.assertTrue((folder / "abstract.md").read_text(encoding="utf-8").startswith("# Paper Template\n"))
+            self.assertIn(
+                "# Claim Notes for Paper Template",
+                (folder / "claims.md").read_text(encoding="utf-8"),
+            )
+
+    def test_markdown_display_preserves_latex_syntax(self) -> None:
+        self.assertEqual(markdown_display("{eGFR} and {FHIR}"), "eGFR and FHIR")
+        self.assertEqual(markdown_display(r"\{A,B\}"), r"\{A,B\}")
+        self.assertEqual(markdown_display(r"\textit{X}"), r"\textit{X}")
+        self.assertEqual(
+            markdown_display(r"{Sets \{A,B\} and \textit{{X}}}"),
+            r"Sets \{A,B\} and \textit{X}",
+        )
+        self.assertEqual(
+            markdown_display(r"\href{https://example.org}{Project {X}}"),
+            r"\href{https://example.org}{Project X}",
+        )
+        self.assertEqual(markdown_display("{unbalanced"), "{unbalanced")
 
     def test_single_line_crossref_bibtex(self) -> None:
         citation = parse_bib(

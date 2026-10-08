@@ -2,15 +2,15 @@
 %
 % SPDX-License-Identifier: MIT
 
-% Generic pdfLaTeX drafting profile.
-% These defaults are not guaranteed to be compatible with publisher classes.
+% Shared pdfLaTeX manuscript capabilities.
+% Presentation packages for the standalone preprint live in
+% paper/setup/preprint-packages.tex and can be bypassed as one profile.
 % Remove unused packages and put publisher-specific overrides in paper/setup/venue.tex.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[letterpaper,margin=1in]{geometry}
-\usepackage{microtype}
-\usepackage{lmodern}
-\usepackage{setspace}
+\ifpaperpreprintlayout
+  \input{paper/setup/preprint-packages}
+\fi
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -19,20 +19,20 @@
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{csquotes}
+\usepackage{etoolbox}
 \usepackage{subfiles}
-\usepackage[round,authoryear]{natbib}
+% Journal-neutral default: numeric citations in square brackets, with grouped
+% citations sorted and compressed. Venue builds should replace this choice when
+% the official class or bibliography instructions require another style.
+\expandafter\usepackage\expandafter[\papernatbiboptions]{natbib}
 \usepackage[acronym,nonumberlist,nopostdot]{glossaries-extra}
 \usepackage[hidelinks]{hyperref}
+\usepackage{orcidlink}
 \usepackage[capitalise,noabbrev]{cleveref}
 
 \graphicspath{{paper/figures/generated/}}
 \setabbreviationstyle[acronym]{long-short}
 \glsdisablehyper
 \urlstyle{same}
-\emergencystretch=2em
-\clubpenalty=10000
-\widowpenalty=10000
-\displaywidowpenalty=10000
-\setlist{nosep,leftmargin=*}
 
 \definecolor{draftred}{HTML}{A61B1B}

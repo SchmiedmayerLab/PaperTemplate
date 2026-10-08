@@ -284,6 +284,7 @@ Follow `project/guides/reproducibility-workflow.md` for the required layout and 
 - Open each source and verify the title, authors, venue, year, study object or population, design, and exact claim before citing it.
 - Prefer the peer-reviewed version when one exists.
 - Use lowercase surname-year-title citation keys, such as `example2026reproducible`.
+- Unless venue rules override it, use square-bracketed numeric citations, sort and compress grouped citations, and order the bibliography by first citation.
 - Put a nonbreaking space before each citation and place the citation before sentence punctuation.
 - Cite every sentence that independently relies on external evidence.
 - Preserve denominator, population, setting, and time context for quantitative claims.
@@ -327,6 +328,8 @@ Add a generalizable rule to this file when it should guide future revisions.
 Do not preserve a narrow wording correction as a universal rule when the feedback applies only to one passage.
 Keep project-specific resolutions in the feedback ledger.
 Update a paper skill only when feedback establishes a reusable procedure for that skill's bounded task.
+Do not post or reply to pull-request comments on behalf of the author.
+Resolve a review thread without a reply only when the user explicitly authorizes resolution and the underlying change or disposition is complete.
 Do not delete a TODO or comment until the manuscript, figure, table, or source asset visibly resolves it.
 
 ## Response Letters and Editorial Documents

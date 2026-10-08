@@ -17,3 +17,12 @@ path = [
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)"
 SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = [
+    "research/literature/schmiedmayer2026papertemplate/citation.bib",
+    "research/literature/schmiedmayer2026papertemplate/abstract.md",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)"
+SPDX-License-Identifier = "MIT"

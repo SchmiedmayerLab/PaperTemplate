@@ -1,0 +1,197 @@
+% SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)
+%
+% SPDX-License-Identifier: MIT
+
+% Standalone preprint presentation.
+% The profile uses a quiet journal vocabulary rather than a publisher or
+% institutional imitation: serif manuscript typography, fine rules, and one
+% restrained accent for navigation and metadata.
+
+\definecolor{paperink}{HTML}{2E2D29}
+\definecolor{paperaccent}{HTML}{8C1515}
+\definecolor{paperaccentdark}{HTML}{820000}
+\definecolor{papermuted}{HTML}{53565A}
+\definecolor{paperrule}{HTML}{C0C0BF}
+\definecolor{paperwash}{HTML}{EAEAEA}
+
+\setstretch{1.045}
+\setlength{\parindent}{1.35em}
+\setlength{\parskip}{0pt plus 0.08em}
+\setlength{\textfloatsep}{1.15\baselineskip plus 0.2\baselineskip minus 0.2\baselineskip}
+\setlength{\floatsep}{0.9\baselineskip plus 0.2\baselineskip minus 0.15\baselineskip}
+\setlength{\intextsep}{0.9\baselineskip plus 0.2\baselineskip minus 0.15\baselineskip}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.14}
+\emergencystretch=2em
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom
+\frenchspacing
+\setlist{leftmargin=*,topsep=0.5em,itemsep=0.22em,parsep=0pt,partopsep=0pt}
+
+\captionsetup{
+  font=small,
+  labelfont={bf,color=paperink},
+  labelsep=period,
+  textfont={color=paperink},
+  justification=RaggedRight,
+  singlelinecheck=false,
+  skip=6pt
+}
+
+\titleformat{\section}
+  {\bfseries\fontsize{15}{18}\selectfont\color{paperink}}
+  {\thesection}
+  {0.72em}
+  {}
+\titleformat{\subsection}
+  {\bfseries\fontsize{12.2}{15}\selectfont\color{paperink}}
+  {\thesubsection}
+  {0.66em}
+  {}
+\titleformat{\subsubsection}
+  {\bfseries\normalsize\color{paperink}}
+  {\thesubsubsection}
+  {0.62em}
+  {}
+\titleformat{\paragraph}[runin]
+  {\bfseries\color{paperink}}
+  {}
+  {0pt}
+  {}
+  [.\quad]
+\titlespacing*{\section}{0pt}{1.75\baselineskip plus 0.30\baselineskip minus 0.20\baselineskip}{0.52\baselineskip}
+\titlespacing*{\subsection}{0pt}{1.20\baselineskip plus 0.20\baselineskip minus 0.15\baselineskip}{0.32\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0.95\baselineskip plus 0.15\baselineskip minus 0.10\baselineskip}{0.24\baselineskip}
+\titlespacing*{\paragraph}{0pt}{0.8\baselineskip}{0.5em}
+\pretocmd{\section}{\Needspace{5\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{4\baselineskip}}{}{}
+
+\newcommand{\preprintseparator}{\hspace{0.62em}\textcolor{paperrule}{\textperiodcentered}\hspace{0.62em}}
+\newcommand{\preprinttoprule}{%
+  \noindent
+  \textcolor{paperrule}{\rule{\textwidth}{0.45pt}}%
+}
+\newif\ifpreprintmetadata
+
+\renewcommand{\makepaperfrontmatter}{%
+  \thispagestyle{preprintfirst}%
+  \begingroup
+  \noindent
+  \hfill
+  {\sffamily\fontsize{8.7}{10.5}\selectfont\color{papermuted}%
+    \ifdefempty{\paperbrand}{}{\paperbrand\preprintseparator}%
+    \ifdefempty{\paperversion}{}{\paperversion}%
+    \ifdefempty{\paperdate}{}{\ifdefempty{\paperversion}{}{\preprintseparator}\paperdate}%
+  }%
+  \par\vspace{0.48em}
+  \preprinttoprule
+  \par\vspace{1.38em}
+  {\raggedright\bfseries\fontsize{25}{28.5}\selectfont\color{paperink}\papertitle\par}
+  \ifdefempty{\papersubtitle}{}{%
+    \vspace{0.42em}
+    {\raggedright\fontsize{13}{16}\selectfont\color{papermuted}\papersubtitle\par}%
+  }
+  \vspace{0.95em}
+  {\raggedright\bfseries\fontsize{11.1}{13.6}\selectfont\color{paperink}\paperauthors\par}
+  \ifdefempty{\paperaffiliations}{}{%
+    \vspace{0.38em}
+    {\raggedright\fontsize{9.2}{11.6}\selectfont\color{papermuted}\paperaffiliations\par}%
+  }
+  \preprintmetadatafalse
+  \vspace{0.64em}
+  {\raggedright\sffamily\fontsize{8.45}{10.6}\selectfont\color{papermuted}%
+    \ifdefempty{\correspondingemail}{}{%
+      \textbf{Correspondence}\enspace\href{mailto:\correspondingemail}{\nolinkurl{\correspondingemail}}%
+      \preprintmetadatatrue
+    }%
+    \ifdefempty{\paperrepositoryurl}{}{%
+      \ifpreprintmetadata\preprintseparator\fi
+      \textbf{Code}\enspace\href{\paperrepositoryurl}{\nolinkurl{\paperrepositorylabel}}%
+      \preprintmetadatatrue
+    }%
+    \ifdefempty{\papercodelicense}{}{%
+      \ifpreprintmetadata\preprintseparator\fi
+      \textbf{License}\enspace\papercodelicense
+      \preprintmetadatatrue
+    }%
+    \ifdefempty{\paperdoiurl}{}{%
+      \ifpreprintmetadata\preprintseparator\fi
+      \textbf{DOI}\enspace
+      \href{\paperdoiurl}{\ifdefempty{\paperdoilabel}{DOI}{\nolinkurl{\paperdoilabel}}}%
+      \preprintmetadatatrue
+    }%
+    \par
+  }
+  \endgroup
+}
+
+\renewenvironment{paperabstract}
+  {%
+    \par\vspace{1.10em}
+    \noindent\textcolor{paperrule}{\rule{\textwidth}{0.5pt}}
+    \par\vspace{0.67em}
+    \noindent{\bfseries\fontsize{11.2}{13.5}\selectfont\color{paperink}Abstract\par}
+    \vspace{0.24em}
+    \begingroup
+    \small
+    \setstretch{1.065}
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{0.34em}%
+  }
+  {%
+    \par
+    \endgroup
+    \vspace{0.58em}
+    \noindent\textcolor{paperrule}{\rule{\textwidth}{0.5pt}}
+    \par\vspace{1.08em}
+  }
+
+\renewcommand{\paperkeywordsblock}{%
+  \ifdefempty{\paperkeywords}{}{%
+    \par\vspace{0.58em}
+    {\sffamily\footnotesize\color{papermuted}\textbf{\color{paperink}Keywords}\enspace\paperkeywords\par}%
+  }%
+}
+
+\fancypagestyle{preprint}{%
+  \fancyhf{}
+  \fancyhead[L]{\sffamily\footnotesize\color{papermuted}\shorttitle}
+  \fancyfoot[C]{\sffamily\footnotesize\color{papermuted}\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+\fancypagestyle{preprintfirst}{%
+  \fancyhf{}
+  \fancyfoot[C]{\sffamily\footnotesize\color{papermuted}\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[L]{\sffamily\footnotesize\color{papermuted}\shorttitle}
+  \fancyfoot[C]{\sffamily\footnotesize\color{papermuted}\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{paperrule}\leaders\hrule height \headrulewidth\hfill}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=paperaccentdark,
+  citecolor=paperink,
+  urlcolor=paperaccentdark,
+  pdfborder={0 0 0},
+  pdftitle={\paperpdftitle},
+  pdfauthor={\paperpdfauthors},
+  pdfsubject={\papersubject},
+  pdfkeywords={\paperkeywords}
+}
+
+\AtBeginDocument{%
+  \color{paperink}
+  \pagestyle{preprint}
+}
+
+\AtBeginEnvironment{thebibliography}{\thispagestyle{preprint}}

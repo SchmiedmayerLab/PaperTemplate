@@ -7,6 +7,23 @@
 \newcommand{\software}[1]{#1}
 \newcommand{\dataset}[1]{#1}
 \newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:#1}}
+\newcommand{\authororcid}[1]{%
+  \ifdefempty{#1}%
+    {}%
+    {\nobreak\hspace{0.22em}\orcidlink{#1}}%
+}
+
+% Presentation hooks let a preprint profile or venue adapter change front matter,
+% abstract styling, keywords, and bibliography style without editing section files.
+\newcommand{\makepaperfrontmatter}{\maketitle}
+\newenvironment{paperabstract}{\begin{abstract}}{\end{abstract}}
+\newcommand{\paperkeywordsblock}{%
+  \ifdefempty{\paperkeywords}{}{%
+    \par\medskip
+    \noindent\textbf{Keywords:} \paperkeywords
+  }%
+}
+\newcommand{\paperbibliographystyle}{unsrtnat}
 
 \ifpaperdraft
   \newcommand{\papertodo}[1]{\textcolor{draftred}{\textbf{[TODO: #1]}}}

@@ -58,17 +58,22 @@ jobs:
           python-version: '3.13'
       - name: Reproduce public artifacts
         run: make reproduce
-      - name: Build manuscript
+      - name: Build preprint manuscript and design preview
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: main.tex
+          root_file: |
+            main.tex
+            paper/preprint-preview.tex
           args: -pdf -interaction=nonstopmode -halt-on-error -file-line-error
           texlive_version: 2026
-      - name: Upload manuscript
+          post_compile: make subfile SUBFILE=paper/sections/10_introduction.tex
+      - name: Upload preprint PDFs
         uses: actions/upload-artifact@v7
         with:
-          name: manuscript
-          path: build/main.pdf
+          name: preprint-pdfs
+          path: |
+            build/main.pdf
+            build/preprint-preview.pdf
           if-no-files-found: error
 
   reuse:

@@ -11,10 +11,12 @@ This directory contains everything that controls the manuscript's scientific tex
 - `sections/` contains the numbered manuscript sections.
 - `supplement/` contains supplementary manuscript text.
 - `figures/` and `tables/` separate editable sources from reproducible exports.
-- `setup/` contains metadata, semantic commands, acronyms, packages, and venue overrides.
+- `setup/` contains metadata, semantic commands, acronyms, shared packages, the default preprint presentation, and venue overrides.
 - `venue/` contains licensed publisher files only when a selected venue requires them.
+- `preprint-preview.tex` is a self-contained visual specimen with illustrative content.
 
 Write and review the paper here.
 Keep evidence, analysis code, and workflow records under `research/` so manuscript content is not mixed with its provenance.
 Compile the full paper from the root `main.tex` file.
+Compile the visual specimen with `make preview-pdf` and inspect `build/preprint-preview.pdf`.
 Compile one section with `make subfile SUBFILE=paper/sections/<file>.tex` so the parent path resolves correctly and auxiliary files remain in `build/`.

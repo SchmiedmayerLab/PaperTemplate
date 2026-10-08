@@ -3,13 +3,32 @@
 % SPDX-License-Identifier: MIT
 
 % Replace every value before drafting the title page.
+% Keep the PDF variants free of formatting commands.
+\newcommand{\paperbrand}{}
+\newcommand{\paperversion}{}
 \newcommand{\papertitle}{Working Title: A Specific and Bounded Scientific Contribution}
-\newcommand{\paperauthors}{First Author; Second Author; and Senior Author}
+\newcommand{\papersubtitle}{}
+\newcommand{\paperpdftitle}{Working Title: A Specific and Bounded Scientific Contribution}
+% Supply a verified ORCID iD for each author who has one.
+% Empty values remain available as placeholders and render no icon.
+\newcommand{\firstauthororcid}{}
+\newcommand{\secondauthororcid}{}
+\newcommand{\lastauthororcid}{0000-0002-8607-9148}
+\newcommand{\paperauthors}{First Author\authororcid{\firstauthororcid}\textsuperscript{1}, Second Author\authororcid{\secondauthororcid}\textsuperscript{1}, and Paul Schmiedmayer\authororcid{\lastauthororcid}\textsuperscript{1,*}}
+\newcommand{\paperpdfauthors}{First Author, Second Author, and Paul Schmiedmayer}
+\newcommand{\paperaffiliations}{\textsuperscript{1}Division of Computational Medicine, Department of Medicine, Stanford University}
 \newcommand{\paperdate}{\today}
 \newcommand{\shorttitle}{Working Short Title}
-\newcommand{\correspondingauthor}{Corresponding Author}
-\newcommand{\correspondingemail}{author@example.edu}
+\newcommand{\correspondingauthor}{Paul Schmiedmayer}
+\newcommand{\correspondingemail}{corresponding.author@stanford.edu}
+\newcommand{\paperrepositoryurl}{}
+\newcommand{\paperrepositorylabel}{github.com/organization/repository}
+\newcommand{\papercodelicense}{}
+\newcommand{\paperdoiurl}{}
+\newcommand{\paperdoilabel}{}
+\newcommand{\paperkeywords}{keyword one; keyword two; keyword three}
+\newcommand{\papersubject}{Preprint manuscript}
 
-% Draft mode renders TODOs and line numbers when explicitly enabled below.
+% Draft mode renders unresolved TODOs when explicitly enabled below.
 \newif\ifpaperdraft
 \paperdrafttrue

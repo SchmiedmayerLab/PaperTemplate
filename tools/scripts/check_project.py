@@ -18,6 +18,7 @@ from reference_common import BIB_PATH, PROJECT_ROOT, bib_keys
 
 TEX_ROOTS = (
     PROJECT_ROOT / "main.tex",
+    PROJECT_ROOT / "paper" / "preprint-preview.tex",
     PROJECT_ROOT / "paper" / "setup",
     PROJECT_ROOT / "paper" / "sections",
     PROJECT_ROOT / "paper" / "supplement",
