@@ -31,13 +31,6 @@ These pages come from the [layout demo](paper/preprint-preview.tex), which has i
 The demo does not use the placeholder manuscript sections and does not report a research study.
 The preprint layout is journal-neutral; use the target venue's official class for submission when required.
 
-## Public release
-
-The first public release is [0.1.0](https://github.com/SchmiedmayerLab/PaperTemplate/releases/tag/0.1.0), published on October 14, 2026.
-Zenodo archives the project under [doi:10.5281/zenodo.23361126](https://doi.org/10.5281/zenodo.23361126).
-This DOI identifies the project across releases and resolves to the latest archived version.
-Use a tagged release when you need a stable starting point; `main` contains ongoing development.
-
 ## Quick start
 
 You need Python 3.10 or newer, Make, and a TeX distribution with `latexmk` and BibTeX.
