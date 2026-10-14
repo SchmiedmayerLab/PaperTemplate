@@ -24,6 +24,7 @@ from package_arxiv import (
     RecorderData,
     audit_isolated_recorder_inputs,
     clear_package_outputs,
+    consolidate_attribution,
     discover_archive_files,
     extract_validated_zip,
     find_internal_source_constructs,
@@ -367,6 +368,61 @@ class PackageArxivTests(unittest.TestCase):
             checksum_report.read_text(encoding="utf-8"),
             f"{sha256(second.archive)}  manuscript.zip\n",
         )
+
+    def test_consolidated_license_preserves_sources_and_omits_contributor_file(self) -> None:
+        self._write_standard_sources()
+        self._write_recorder()
+        notice = "MIT License\n\nCopyright Authors (see CONTRIBUTORS.md)\n\nPermission notice.\n"
+        contributors = (
+            "<!-- SPDX license header and private process comment -->\n"
+            "# Contributors\n\n- [First Author](https://example.org/first)\n- Second Author\n"
+        )
+        license_path = self.root / "LICENSE.md"
+        contributor_path = self.root / "CONTRIBUTORS.md"
+        license_path.write_text(notice, encoding="utf-8")
+        contributor_path.write_text(contributors, encoding="utf-8")
+        config = load_config(self.root, self._write_config(extra_files=[{
+            "source": "LICENSE.md", "destination": "LICENSE.txt", "purpose": "license",
+            "attribution_source": "CONTRIBUTORS.md",
+        }]))
+        first = package_from_recorder(config, [self.system_root])
+        with zipfile.ZipFile(first.archive) as bundle:
+            self.assertNotIn("CONTRIBUTORS.md", bundle.namelist())
+            self.assertEqual(bundle.read("LICENSE.txt").decode(),
+                "MIT License\n\nCopyright Authors (see contributor attribution below)\n\n"
+                "Permission notice.\n\nContributor attribution\n\n- First Author\n- Second Author\n")
+        self.assertEqual(license_path.read_text(encoding="utf-8"), notice)
+        self.assertEqual(contributor_path.read_text(encoding="utf-8"), contributors)
+        self.assertEqual(first.sha256, package_from_recorder(config, [self.system_root]).sha256)
+        contributor_path.unlink()
+        with self.assertRaisesRegex(ArxivPackageError, "does not exist"):
+            package_from_recorder(config, [self.system_root])
+        contributor_path.symlink_to(license_path)
+        with self.assertRaisesRegex(ArxivPackageError, "symbolic link"):
+            package_from_recorder(config, [self.system_root])
+
+    def test_consolidated_attribution_rejects_ambiguous_or_empty_content(self) -> None:
+        for contributors in (
+            "# Contributors\n", "Internal review note", "- [Name](http://example.org)",
+            "<!-- unclosed comment\n- Name", "- Name\nUnreviewed paragraph", "- ",
+        ):
+            with self.subTest(contributors=contributors), self.assertRaises(ArxivPackageError):
+                consolidate_attribution("Copyright (see CONTRIBUTORS.md)", contributors, "CONTRIBUTORS.md")
+        for notice in ("Copyright Authors", "(see CONTRIBUTORS.md) (see CONTRIBUTORS.md)"):
+            with self.subTest(notice=notice), self.assertRaisesRegex(ArxivPackageError, "exactly one"):
+                consolidate_attribution(notice, "- Name", "CONTRIBUTORS.md")
+
+    def test_attribution_configuration_rejects_unsafe_paths_and_nontext_output(self) -> None:
+        for attribution, destination in (("../CONTRIBUTORS.md", "LICENSE.txt"),
+                                         ("CONTRIBUTORS.md", "main.tex"),
+                                         (".private/names.md", "LICENSE.txt")):
+            with self.subTest(attribution=attribution, destination=destination):
+                config_path = self._write_config(extra_files=[{
+                    "source": "LICENSE.md", "destination": destination, "purpose": "license",
+                    "attribution_source": attribution,
+                }])
+                with self.assertRaises(ArxivPackageError):
+                    load_config(self.root, config_path)
 
     def test_path_traversal_input_fails(self) -> None:
         self._write_standard_sources()
