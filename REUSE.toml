@@ -14,6 +14,9 @@ path = [
     "project/submission/arxiv.json",
     "references.bib",
     "research/reproducibility/pipeline.json",
+    "project/assets/previews/page-1.png",
+    "project/assets/previews/page-2.png",
+    "project/assets/previews/preprint-preview.pdf",
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)"

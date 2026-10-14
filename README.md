@@ -8,35 +8,56 @@ SPDX-License-Identifier: MIT
 
 -->
 
-# Paper Template
+# PaperTemplate: Reproducible LaTeX Papers
 
 [![Build and Test](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml/badge.svg)](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 
-This repository is a reusable starting point for scientific and technical papers written in LaTeX.
-It combines modular manuscript source, source-first references, a declared data-to-artifact pipeline, durable editorial context, repository-local agent skills, and submission checks.
+Write scientific papers in LaTeX with source-derived references, reproducible figures, and a checked arXiv source export.
+PaperTemplate provides a single-column preprint layout, modular manuscript sections, and automated checks.
+Use the writing and review instructions with an agent if useful; the manuscript and build tools work without one.
 
-The default standalone build uses a quiet contemporary-journal presentation with a compact title block, readable single-column typography, and restrained running elements.
-This presentation profile is distinct from the scientific article profiles in `project/guides/article-profiles.md` and is not a guarantee of compatibility with a publisher class.
-The paper's article profile, domain guidance, section structure, and venue adapter should still be selected explicitly for each project.
+[Get started](#quick-start) · [View the preview PDF](project/assets/previews/preprint-preview.pdf) · [Publication workflow](project/guides/publication-workflow.md)
+
+| Title and abstract | Main text |
+| --- | --- |
+| [![Title page with authors, ORCID links, repository link, and abstract](project/assets/previews/page-1.png)](project/assets/previews/preprint-preview.pdf) | [![Single-column content page with section headings, prose, and a diagram](project/assets/previews/page-2.png)](project/assets/previews/preprint-preview.pdf) |
+
+These pages come from the [existing design specimen](paper/preprint-preview.tex), not a research study.
+The preprint layout is journal-neutral; use the target venue's official class for submission when required.
 
 ## Quick start
 
-1. Copy this repository or publish it as a GitHub template repository.
-2. Update `CONTRIBUTORS.md`, every field in `paper/setup/metadata.tex`, and the repository licensing metadata.
-3. Complete `project/notes/00_project_brief.md` and select a profile from `project/guides/article-profiles.md`.
-4. Verify candidate venue rules in `project/notes/01_venue_requirements.md`.
-5. Run `make submodules` when the project uses external repositories.
-6. Inventory foundational data in `research/data/manifest.tsv` and define the environment under `research/analysis/environment/`.
-7. Declare generated figures and tables in `research/reproducibility/pipeline.json`.
-8. Draft one sentence per physical source line in `paper/sections/`.
-9. Add references through `tools/scripts/add_reference.py` rather than editing generated `references.bib`.
-10. Run `make all` while drafting, `make submission-check` before final circulation, and `make arxiv` for a checked arXiv source ZIP.
+You need Python 3.10 or newer, Make, and a TeX distribution with `latexmk` and BibTeX.
+Ghostscript is also required for arXiv export and documentation preview generation.
 
-Required local tools are Python 3.10 or newer, a current TeX distribution with `latexmk` and BibTeX, and Ghostscript for arXiv render comparison.
-Run `make doctor` to verify the TeX Live packages used by the default preprint presentation.
-The repository scripts use only the Python standard library.
-REUSE and Linkspector are optional locally and enforced by CI when the repository is hosted in the SchmiedmayerLab organization.
+1. Select **Use this template → Create a new repository** on GitHub, then clone your new repository and open its directory.
+2. Edit the title, authors, affiliations, and correspondence in [paper/setup/metadata.tex](paper/setup/metadata.tex), then start writing in [paper/sections/](paper/sections/).
+3. Check your tools and build the manuscript:
+
+   ```bash
+   make doctor
+   make all
+   ```
+
+Open `build/main.pdf` to see your paper.
+Draft-placeholder warnings are expected until you replace the starter text.
+To inspect the design without editing a manuscript, run `make preview-pdf` and open `build/preprint-preview.pdf`.
+
+## Set up your paper
+
+Once the first build works, follow the [customization checklist](project/guides/customization-checklist.md):
+
+- Update contributors, licensing, and manuscript citation metadata while retaining the template attribution.
+- Define the contribution and article profile in [the project brief](project/notes/00_project_brief.md), and record [venue requirements](project/notes/01_venue_requirements.md).
+- Add references through the [reference workflow](project/guides/reference-workflow.md), rather than editing generated `references.bib`.
+- If your paper uses data or analysis, register its inputs and generating commands in the [reproducibility workflow](project/guides/reproducibility-workflow.md).
+  Initialize external repositories with `make submodules` when applicable.
+
+Write one sentence per source line and run `make all` while drafting.
+Before submission, run `make submission-check`; use `make arxiv` to create and validate a source ZIP.
+The Python scripts use only the standard library.
+REUSE and Linkspector are optional locally and enforced by the configured GitHub workflows.
 
 ## Repository map
 
@@ -123,6 +144,8 @@ The design specimen is written to `build/preprint-preview.pdf`.
 The `subfile` target changes into the source directory before compiling and writes its output to `build/`.
 Use that target rather than invoking `latexmk paper/sections/<file>.tex` from the repository root.
 Build outputs, derived artifacts, local source material, restricted data, and downloaded article PDFs are ignored to avoid stale results, repository bloat, and accidental redistribution.
+The three [documentation preview assets](project/assets/previews/) are an explicit exception so GitHub can display them without a build or an external host.
+Regenerate them from the design specimen with `make readme-previews`; do not edit them manually.
 
 ## arXiv source package
 
@@ -158,7 +181,8 @@ The front matter, abstract, keywords, and bibliography style use hooks defined i
 The journal-neutral drafting default uses square-bracketed numeric citations, sorts and compresses grouped citations, and orders the bibliography by first citation.
 Define `\papernatbiboptions` before loading `main.tex` when a venue requires another `natbib` citation mode.
 Run `make preview-pdf` to render a complete design specimen with illustrative content, a figure, and a table.
-The preview is an ignored review artifact rather than a submission file.
+The working preview in `build/` is ignored and is not a submission file.
+The README links to a separately generated documentation snapshot.
 
 ## Reference workflow
 
