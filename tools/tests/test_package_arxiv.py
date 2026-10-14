@@ -6,11 +6,13 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 import zipfile
+from dataclasses import replace
 from datetime import date, datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -21,6 +23,7 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 from package_arxiv import (
     ArxivPackageError,
+    GeneratedFile,
     PackageResult,
     RecorderData,
     audit_isolated_recorder_inputs,
@@ -35,6 +38,7 @@ from package_arxiv import (
     parse_recorder,
     publish_package,
     report_paths,
+    run_source_build,
     sha256,
     strip_latex_comments,
     submission_build_environment,
@@ -434,6 +438,118 @@ class PackageArxivTests(unittest.TestCase):
             checksum_report.read_text(encoding="utf-8"),
             f"{sha256(second.archive)}  manuscript.zip\n",
         )
+
+    def test_shadowed_bibliography_reports_actual_input_without_fallback(self) -> None:
+        self._write_standard_sources()
+        root_bibliography = self.root / "main.bbl"
+        root_bibliography.write_text("Actual recorded bibliography\n", encoding="utf-8")
+        configured_bibliography = self.root / "build" / "main.bbl"
+        self._write_recorder()
+        recorder_path = self.root / "build" / "main.fls"
+        recorder_path.write_text(
+            recorder_path.read_text(encoding="utf-8").replace(
+                "INPUT build/main.bbl", "INPUT main.bbl",
+            ),
+            encoding="utf-8",
+        )
+        config = load_config(self.root, self._write_config())
+        for stale_configured_file in (False, True):
+            with self.subTest(stale_configured_file=stale_configured_file):
+                if stale_configured_file:
+                    configured_bibliography.write_text("Stale bibliography\n", encoding="utf-8")
+                else:
+                    configured_bibliography.unlink()
+                before = root_bibliography.read_bytes()
+                with self.assertRaisesRegex(
+                    ArxivPackageError,
+                    r"configured bibliography build/main\.bbl was not read.*"
+                    r"recorded bibliography inputs: main\.bbl.*Align recorder and generated_files",
+                ):
+                    package_from_recorder(config, [self.system_root])
+                self.assertEqual(root_bibliography.read_bytes(), before)
+                self.assertFalse((self.root / config.archive).exists())
+                if stale_configured_file:
+                    self.assertEqual(configured_bibliography.read_text(), "Stale bibliography\n")
+                else:
+                    self.assertFalse(configured_bibliography.exists())
+
+        aligned = replace(
+            config,
+            generated_files=(GeneratedFile(Path("main.bbl"), Path("main.bbl")),),
+        )
+        result = package_from_recorder(aligned, [self.system_root])
+        with zipfile.ZipFile(result.archive) as bundle:
+            self.assertEqual(bundle.read("main.bbl"), root_bibliography.read_bytes())
+            self.assertNotIn("build/main.bbl", bundle.namelist())
+        self.assertEqual(configured_bibliography.read_text(), "Stale bibliography\n")
+
+    def test_missing_recorded_bibliography_reports_no_inputs(self) -> None:
+        self._write_standard_sources()
+        self._write_recorder()
+        recorder_path = self.root / "build" / "main.fls"
+        recorder_path.write_text(
+            recorder_path.read_text(encoding="utf-8").replace("INPUT build/main.bbl\n", ""),
+            encoding="utf-8",
+        )
+        config = load_config(self.root, self._write_config())
+        with self.assertRaisesRegex(
+            ArxivPackageError, "was not read.*recorded bibliography inputs: none",
+        ):
+            package_from_recorder(config, [self.system_root])
+        self.assertFalse((self.root / config.archive).exists())
+
+    @unittest.skipUnless(
+        all(shutil.which(tool) for tool in ("latexmk", "pdflatex", "bibtex", "kpsewhich")),
+        "LaTeX tools are required for the bibliography output-directory regression",
+    )
+    def test_real_latex_build_detects_shadowed_bibliography_and_accepts_aligned_paths(self) -> None:
+        (self.root / "main.tex").write_text(
+            "\\documentclass{article}\n"
+            "\\begin{document}\n"
+            "Test citation~\\cite{example}.\n"
+            "\\bibliographystyle{plain}\n"
+            "\\bibliography{references}\n"
+            "\\end{document}\n",
+            encoding="utf-8",
+        )
+        (self.root / "references.bib").write_text(
+            "@article{example,author={Example, Anne},title={Recorded title},"
+            "journal={Journal},year={2026}}\n",
+            encoding="utf-8",
+        )
+        build_config = load_config(self.root, self._write_config())
+        build_config = replace(
+            build_config, compiler=("latexmk", "-norc", "-pdf", "-halt-on-error"),
+        )
+        root_config = replace(
+            build_config,
+            recorder=Path("main.fls"),
+            generated_files=(GeneratedFile(Path("main.bbl"), Path("main.bbl")),),
+        )
+        run_source_build(root_config, submission_date=date(2025, 1, 2))
+        run_source_build(build_config, submission_date=date(2025, 1, 2))
+        recorder = parse_recorder(self.root / build_config.recorder, self.root)
+        self.assertIn((self.root / "main.bbl").resolve(), recorder.inputs)
+        for stale_configured_file in (False, True):
+            with self.subTest(stale_configured_file=stale_configured_file):
+                if stale_configured_file:
+                    (self.root / "build" / "main.bbl").write_text(
+                        "Unrelated stale output\n", encoding="utf-8",
+                    )
+                with self.assertRaisesRegex(
+                    ArxivPackageError, r"configured bibliography build/main\.bbl was not read",
+                ):
+                    package_from_recorder(build_config)
+
+        run_source_build(root_config, submission_date=date(2025, 1, 2))
+        result = package_from_recorder(root_config)
+        with zipfile.ZipFile(result.archive) as bundle:
+            self.assertIn(b"Recorded title", bundle.read("main.bbl"))
+            self.assertNotIn("build/main.bbl", bundle.namelist())
+        self.assertEqual(
+            (self.root / "build" / "main.bbl").read_text(), "Unrelated stale output\n",
+        )
+        validate_archive(result.archive, root_config)
 
     def test_path_traversal_input_fails(self) -> None:
         self._write_standard_sources()

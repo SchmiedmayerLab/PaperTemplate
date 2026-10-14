@@ -65,6 +65,24 @@ The default configuration maps `build/main.bbl` to `main.bbl`, whose basename ma
 This keeps the archive deterministic and avoids exposing uncited or internal entries from `references.bib`.
 Declare a generated `.ind`, `.gls`, or `.nls` file in the same way if the final manuscript consumes one.
 
+## Adapting an existing paper's build paths
+
+Keep the packaging configuration aligned with the output directory used by the paper's normal LaTeX build.
+The template's `latexmkrc` uses `build/`, so its default `recorder` and generated bibliography source are `build/main.fls` and `build/main.bbl`.
+For a paper that builds in the repository root, set `recorder` to `main.fls` and the bibliography's `generated_files[].source` to `main.bbl` in `project/submission/arxiv.json`.
+Keep the archive destination as `main.bbl` in either case.
+Update any local PDF links and CI artifact paths when changing the normal build directory.
+
+An existing bibliography in another directory can affect LaTeX's file lookup even when the compiler receives an explicit output directory.
+For example, a build directed to `build/` can still read the repository-root `main.bbl` and never produce `build/main.bbl`.
+The packager checks the bibliography path against the fresh recorder inputs before assembling an archive.
+If the paths disagree, it reports both the configured source and the bibliography inputs actually recorded, including when an unused file already exists at the configured path.
+It does not substitute another bibliography or remove existing build outputs.
+
+Resolve a mismatch by aligning the normal build and packaging paths, then rebuild and run `make arxiv-check`.
+If intentionally switching output directories, inspect and move aside obsolete generated files from the old directory before rebuilding; preserve manuscript source and any manually maintained bibliography assets.
+The isolated compilation and rendered-PDF comparison remain required after the path check succeeds.
+
 ## Included and excluded material
 
 The ZIP includes only recorded manuscript dependencies, declared generated files, and explicitly reviewed license and attribution files.

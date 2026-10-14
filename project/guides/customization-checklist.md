@@ -14,7 +14,8 @@ Several LaTeX and manuscript choices are deliberate drafting defaults that must 
 - [ ] Update the optional brand or institution label, status, version, title, PDF title, authors, PDF authors, affiliations, date, short title, correspondence, repository display path, code license, DOI, DOI label, keywords, and subject fields in `paper/setup/metadata.tex`.
 - [ ] Record a verified ORCID iD for each author who has one; leave the field empty rather than inventing an identifier.
 - [ ] Update `CONTRIBUTORS.md`, copyright years, and project-specific licensing decisions.
-- [ ] Update `CITATION.cff` for the new manuscript while retaining the template citation and an acknowledgment of its actual role in the writing workflow.
+- [ ] Update `CITATION.cff` for the new manuscript while preserving the template's original title and authorship in `research/literature/schmiedmayer2026papertemplate/citation.bib` and retaining its manuscript citation.
+- [ ] Use the formal template title in a brief, accurate acknowledgment; list specific contributions only when needed and provide any venue-required AI disclosure separately.
 - [ ] Select an article profile and remove irrelevant sections, subsections, declarations, and TODOs.
 - [ ] Remove unused acronyms, semantic commands, packages, figures, tables, and supplement files.
 - [ ] Replace the empty data and reproducibility manifests with the project's actual provenance.

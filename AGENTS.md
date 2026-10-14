@@ -315,9 +315,12 @@ Never run a broad reference operation that deletes unrecognized folders.
 
 ## Template Attribution
 
-Retain a concise acknowledgment of Paper Template in `paper/sections/90_acknowledgments.tex` and cite `schmiedmayer2026papertemplate`.
-Credit its actual role in manuscript preparation; mention agent assistance only when used, and avoid promotional claims.
-Keep venue-required AI disclosures separate, and preserve the template citation when adapting `CITATION.cff` for a new paper.
+Retain a concise acknowledgment of the template in `paper/sections/90_acknowledgments.tex` and cite `schmiedmayer2026papertemplate`.
+Use the formal work title and authorship from the template's original `CITATION.cff` or verified source citation asset rather than repository shorthand alone.
+Prefer one brief sentence; enumerate components or procedures only when they clarify a material contribution.
+Credit the components and procedures actually used; mention agent assistance only when used, and avoid promotional claims.
+When adapting `CITATION.cff` for a new manuscript, preserve the template's own metadata in `research/literature/schmiedmayer2026papertemplate/citation.bib` and retain its manuscript citation.
+Keep venue-required AI disclosures separate; acknowledging the template does not satisfy those requirements by itself.
 
 ## Feedback and Revision Workflow
 

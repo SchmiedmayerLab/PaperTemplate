@@ -19,13 +19,14 @@ Write scientific papers in LaTeX with source-derived references, reproducible fi
 PaperTemplate provides a single-column preprint layout, modular manuscript sections, and automated checks.
 Use the writing and review instructions with an agent if useful; the manuscript and build tools work without one.
 
-[Get started](#quick-start) · [View the preview PDF](project/assets/previews/preprint-preview.pdf) · [Publication workflow](project/guides/publication-workflow.md)
+[Get started](#quick-start) · [View the layout demo PDF](project/assets/previews/preprint-preview.pdf) · [Publication workflow](project/guides/publication-workflow.md)
 
 | Title and abstract | Main text |
 | --- | --- |
 | [![Title page with authors, ORCID links, repository link, and abstract](project/assets/previews/page-1.png)](project/assets/previews/preprint-preview.pdf) | [![Single-column content page with section headings, prose, and a diagram](project/assets/previews/page-2.png)](project/assets/previews/preprint-preview.pdf) |
 
-These pages come from the [existing design specimen](paper/preprint-preview.tex), not a research study.
+These pages come from the [layout demo](paper/preprint-preview.tex), which has its own illustrative prose, diagram, and table.
+The demo does not use the placeholder manuscript sections and does not report a research study.
 The preprint layout is journal-neutral; use the target venue's official class for submission when required.
 
 ## Quick start
@@ -45,6 +46,7 @@ Ghostscript is also required for arXiv export and documentation preview generati
 Open `build/main.pdf` to see your paper.
 Draft-placeholder warnings are expected until you replace the starter text.
 To inspect the design without editing a manuscript, run `make preview-pdf` and open `build/preprint-preview.pdf`.
+Write your paper in `main.tex` and `paper/sections/`; `paper/preprint-preview.tex` is only the layout demo.
 
 ## Set up your paper
 
@@ -265,9 +267,12 @@ This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for
 Please cite *A Reproducible Workflow for Evidence-Centered Scientific Papers* by Paul Schmiedmayer using [CITATION.cff](CITATION.cff) or GitHub's [Cite this repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files) button.
 The template includes this acknowledgment and its bibliography citation:
 
-> This manuscript was prepared using Paper Template, which supported agent-assisted drafting, reference management, and evidence tracking [reference].
+> This manuscript was prepared using *A Reproducible Workflow for Evidence-Centered Scientific Papers* [reference].
 
-Adapt the acknowledgment to actual use and provide any venue-required AI disclosure separately.
+Use the formal title and authorship from the template's original `CITATION.cff` or its [source citation asset](research/literature/schmiedmayer2026papertemplate/citation.bib).
+When replacing `CITATION.cff` with your manuscript metadata, retain that source asset and the corresponding manuscript citation.
+Keep the acknowledgment brief and accurate; list specific components or procedures only when they clarify a material contribution.
+Provide any venue-required AI disclosure separately; this acknowledgment does not replace it.
 
 ## Our Research
 
