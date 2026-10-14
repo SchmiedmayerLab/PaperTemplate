@@ -275,7 +275,7 @@ Run `make license-check` to validate the current checkout; the badge above repor
 
 ## Citation
 
-Please cite the template using its project DOI, [10.5281/zenodo.23361126](https://doi.org/10.5281/zenodo.23361126), [CITATION.cff](CITATION.cff), or GitHub's **Cite this repository** button.
+Please cite the template using its project DOI, [10.5281/zenodo.23361126](https://doi.org/10.5281/zenodo.23361126), [CITATION.cff](CITATION.cff), or GitHub's [**Cite this repository**](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files) button.
 
 > Schmiedmayer, P. (2026). *A Reproducible Workflow for Evidence-Centered Scientific Papers* [Software]. Zenodo. https://doi.org/10.5281/zenodo.23361126
 
