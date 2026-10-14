@@ -8,7 +8,9 @@ SPDX-License-Identifier: MIT
 
 -->
 
-# PaperTemplate: Reproducible LaTeX Papers
+# A Reproducible Workflow for Evidence-Centered Scientific Papers
+
+*A LaTeX template for reproducible research and agent-assisted writing.*
 
 [![Build and Test](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml/badge.svg)](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
