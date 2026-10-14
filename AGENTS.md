@@ -67,6 +67,10 @@ Record the underlying lesson rather than only the wording of a temporary TODO.
 
 ## Generic Template Boundary
 
+When maintaining the reusable template itself, keep manuscript decision, feedback, and evidence logs empty apart from headings and reusable instructions.
+Document current template behavior in the guides and README rather than recording template-development history in starter notes.
+Populate these logs only after instantiating the template for a manuscript; retain intentional examples and their source-derived reference inventory.
+
 Select the article profile in `project/notes/00_project_brief.md` before restructuring the manuscript.
 Use `project/guides/article-profiles.md` and `project/guides/domain-checklists.md` as conditional guidance.
 Do not retain a section, acronym, package, declaration, analysis step, or reporting checklist only because the template contains it.

@@ -11,7 +11,6 @@ Use stable identifiers so manuscript prose, pipeline steps, and review comments 
 
 | ID | Claim or artifact | Foundational input and version | Code and configuration | Exact command | Environment and seed | Output or source location | Manuscript location | Verification status |
 |---|---|---|---|---|---|---|---|---|
-| EVID-001 | TODO | TODO | TODO | TODO | TODO | TODO | TODO | planned |
 
 For empirical literature claims, record the citation key, the precise supported statement, and the relevant page, section, table, or figure.
 For computed results, use the matching step identifier from `research/reproducibility/pipeline.json` and the matching data entry from `research/data/manifest.tsv`.
