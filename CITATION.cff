@@ -9,6 +9,7 @@
 cff-version: 1.2.0
 message: "Please cite A Reproducible Workflow for Evidence-Centered Scientific Papers by Paul Schmiedmayer and briefly acknowledge its use in manuscript preparation. Provide any venue-required AI disclosure separately."
 type: software
+doi: "10.5281/zenodo.23361126"
 authors:
 - family-names: "Schmiedmayer"
   given-names: "Paul"

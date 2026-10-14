@@ -21,4 +21,5 @@ permissions:
 jobs:
   standards:
     name: Standards
-    uses: SchmiedmayerLab/.github/.github/workflows/repository-standards.yml@v0.5
+    # v0.5.18 has an invalid nested Markdown Links workflow reference.
+    uses: SchmiedmayerLab/.github/.github/workflows/repository-standards.yml@v0.5.17

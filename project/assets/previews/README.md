@@ -23,5 +23,5 @@ Rendering can vary across TeX and Ghostscript releases; inspect both pages after
 For a disposable check, run `make readme-previews README_PREVIEW_DIR=build/readme-assets`.
 
 Only `page-1.png`, `page-2.png`, and `preprint-preview.pdf` are committed exports.
-This documentation-only exception lets GitHub display previews in a private repository without an external host, public release, or expiring build artifact.
+This documentation-only exception lets GitHub display previews directly in public or private repositories without an external host or expiring build artifact.
 The assets are outside the arXiv package allowlist and are not manuscript submission files.

@@ -4,7 +4,7 @@
 - Authors: Schmiedmayer, Paul
 - Venue: Not available
 - Year: 2026
-- Identifiers: No persistent identifier found in citation export.
+- Identifiers: DOI: `10.5281/zenodo.23361126`
 - Metadata source: `citation.bib`
 
 ## Abstract

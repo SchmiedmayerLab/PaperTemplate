@@ -14,12 +14,14 @@ SPDX-License-Identifier: MIT
 
 [![Build and Test](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml/badge.svg)](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23361126.svg)](https://doi.org/10.5281/zenodo.23361126)
+[![REUSE status](https://api.reuse.software/badge/github.com/SchmiedmayerLab/PaperTemplate)](https://api.reuse.software/info/github.com/SchmiedmayerLab/PaperTemplate)
 
 Write scientific papers in LaTeX with source-derived references, reproducible figures, and a checked arXiv source export.
 PaperTemplate provides a single-column preprint layout, modular manuscript sections, and automated checks.
 Use the writing and review instructions with an agent if useful; the manuscript and build tools work without one.
 
-[Get started](#quick-start) · [View the layout demo PDF](project/assets/previews/preprint-preview.pdf) · [Publication workflow](project/guides/publication-workflow.md)
+[Get started](#quick-start) · [View the layout demo PDF](project/assets/previews/preprint-preview.pdf) · [Publication workflow](project/guides/publication-workflow.md) · [Cite the template](#citation)
 
 | Title and abstract | Main text |
 | --- | --- |
@@ -28,6 +30,13 @@ Use the writing and review instructions with an agent if useful; the manuscript 
 These pages come from the [layout demo](paper/preprint-preview.tex), which has its own illustrative prose, diagram, and table.
 The demo does not use the placeholder manuscript sections and does not report a research study.
 The preprint layout is journal-neutral; use the target venue's official class for submission when required.
+
+## Public release
+
+The first public release is [0.1.0](https://github.com/SchmiedmayerLab/PaperTemplate/releases/tag/0.1.0), published on October 14, 2026.
+Zenodo archives the project under [doi:10.5281/zenodo.23361126](https://doi.org/10.5281/zenodo.23361126).
+This DOI identifies the project across releases and resolves to the latest archived version.
+Use a tagged release when you need a stable starting point; `main` contains ongoing development.
 
 ## Quick start
 
@@ -261,10 +270,17 @@ Contributions to this project are welcome. Please make sure to read the [contrib
 ## License
 
 This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for more information.
+File-level copyright and license information follows [REUSE](https://reuse.software/), and the repository is registered with the [REUSE service](https://api.reuse.software/info/github.com/SchmiedmayerLab/PaperTemplate).
+Run `make license-check` to validate the current checkout; the badge above reports the service status.
 
 ## Citation
 
-Please cite *A Reproducible Workflow for Evidence-Centered Scientific Papers* by Paul Schmiedmayer using [CITATION.cff](CITATION.cff) or GitHub's [Cite this repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files) button.
+Please cite the template using its project DOI, [10.5281/zenodo.23361126](https://doi.org/10.5281/zenodo.23361126), [CITATION.cff](CITATION.cff), or GitHub's **Cite this repository** button.
+
+> Schmiedmayer, P. (2026). *A Reproducible Workflow for Evidence-Centered Scientific Papers* [Software]. Zenodo. https://doi.org/10.5281/zenodo.23361126
+
+The project DOI is the default citation across releases.
+For exact reproduction, also record the release tag or commit used; Zenodo provides a version-specific DOI when an immutable archive citation is needed.
 The template includes this acknowledgment and its bibliography citation:
 
 > This manuscript was prepared using *A Reproducible Workflow for Evidence-Centered Scientific Papers* [reference].
