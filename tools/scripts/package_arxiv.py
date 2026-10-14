@@ -600,8 +600,23 @@ def discover_archive_files(
     root = config.project_root
     system_roots = tuple(path.resolve() for path in tex_system_roots)
     output_resolved = {path.resolve(strict=False) for path in recorder.outputs}
+    input_resolved = {path.resolve(strict=False) for path in recorder.inputs}
     generated_by_source: dict[Path, GeneratedFile] = {}
     for item in config.generated_files:
+        if item.source.suffix.lower() == ".bbl" and (root / item.source).resolve() not in input_resolved:
+            recorded_bibliographies = sorted(
+                str(path.relative_to(root)) if path.is_relative_to(root) else str(path)
+                for path in input_resolved
+                if path.suffix.lower() == ".bbl"
+            )
+            raise ArxivPackageError(
+                f"configured bibliography {item.source} was not read by the recorded build; "
+                "recorded bibliography inputs: " + (", ".join(recorded_bibliographies) or "none")
+                + ". Align recorder and generated_files source paths in the arXiv configuration "
+                "with the normal LaTeX output directory, then rebuild. Existing root-level "
+                "bibliographies can shadow output-directory files; no fallback bibliography "
+                "was selected."
+            )
         relative, absolute = _canonical_project_file(root, item.source, "generated file source")
         _assert_safe_archive_path(item.destination, "generated file destination")
         generated_by_source[absolute.resolve()] = GeneratedFile(relative, item.destination)

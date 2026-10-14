@@ -97,4 +97,7 @@ jobs:
         uses: xu-cheng/texlive-action@v3
         with:
           texlive_version: 2025
-          run: make arxiv-check
+          run: |
+            set -e
+            python3 -m unittest discover -s tools/tests -p 'test_package_arxiv.py'
+            make arxiv-check

@@ -7,7 +7,7 @@
 #
 
 cff-version: 1.2.0
-message: "Please cite this work and acknowledge Paper Template as the foundation of your manuscript's writing and evidence-management workflow, including its agentic harness when used."
+message: "Please cite A Reproducible Workflow for Evidence-Centered Scientific Papers by Paul Schmiedmayer and briefly acknowledge its use in manuscript preparation. Provide any venue-required AI disclosure separately."
 type: software
 authors:
 - family-names: "Schmiedmayer"
