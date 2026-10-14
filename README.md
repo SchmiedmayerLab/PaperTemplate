@@ -13,9 +13,9 @@ SPDX-License-Identifier: MIT
 *A LaTeX template for reproducible research and agent-assisted writing.*
 
 [![Build and Test](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml/badge.svg)](https://github.com/SchmiedmayerLab/PaperTemplate/actions/workflows/validate.yml)
+[![REUSE status](https://api.reuse.software/badge/github.com/SchmiedmayerLab/PaperTemplate)](https://api.reuse.software/info/github.com/SchmiedmayerLab/PaperTemplate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23361126.svg)](https://doi.org/10.5281/zenodo.23361126)
-[![REUSE status](https://api.reuse.software/badge/github.com/SchmiedmayerLab/PaperTemplate)](https://api.reuse.software/info/github.com/SchmiedmayerLab/PaperTemplate)
 
 Write scientific papers in LaTeX with source-derived references, reproducible figures, and a checked arXiv source export.
 PaperTemplate provides a single-column preprint layout, modular manuscript sections, and automated checks.
