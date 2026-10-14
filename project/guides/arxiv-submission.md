@@ -64,7 +64,7 @@ Declare a generated `.ind`, `.gls`, or `.nls` file in the same way if the final 
 
 ## Included and excluded material
 
-The ZIP includes only recorded manuscript dependencies, declared generated files, and an explicitly reviewed license notice with consolidated attribution.
+The ZIP includes only recorded manuscript dependencies, declared generated files, and explicitly reviewed license and attribution files.
 Typical payload files are `.tex`, a matching `.bbl`, project-local class or style files when unavoidable, and final PDF, PNG, or JPEG figures referenced by the manuscript.
 PDFLaTeX requires figures to be in a supported final format because arXiv does not perform figure conversion during compilation.
 Every recorder-derived input must be classified either as a TeX-language file whose comments are removed or as a final binary asset listed in `copy_extensions`.
@@ -88,10 +88,8 @@ Review every packaged source file, asset, and link before uploading; remove inte
 The default archive maps `LICENSE.md` to `LICENSE.txt` so removing inline SPDX comments does not remove the template's MIT notice.
 This notice covers the repository and template source; it does not select or replace the submission license chosen in arXiv's interface.
 Authors must confirm that the arXiv license, publisher policy, figure rights, and all redistributed source files are compatible.
-The optional `attribution_source` field reads `CONTRIBUTORS.md` and consolidates its names into the staged `LICENSE.txt`; the contributor file itself is not included.
-Only the exported notice changes: its contributor-file reference points to the appended attribution, while the repository's license and contributor files remain unchanged.
-The contributor list accepts Markdown headings and name bullets, optionally linked with HTTPS URLs; comments and link markup are omitted, and unsupported content stops packaging for review.
-Update both source records for new authors or differently licensed material; do not infer a manuscript's license from the template's license.
+The archive also includes `CONTRIBUTORS.md`, which the license notice references for contributor attribution.
+Update both records for new authors or differently licensed material; do not infer a manuscript's license from the template's license.
 Do not strip a copyright or license notice from a third-party class, style, bibliography style, or font without preserving every notice its license requires.
 Prefer the version already provided by arXiv's TeX Live installation.
 If a third-party file must be uploaded, verify its redistribution terms and declare any required notice as a reviewed legal file.

@@ -133,7 +133,6 @@ class ExtraFile:
     source: Path
     destination: Path
     purpose: str
-    attribution_source: Path | None = None
 
 
 @dataclass(frozen=True)
@@ -349,32 +348,20 @@ def load_config(
         raise ArxivPackageError("extra_files must be an array")
     extra_files: list[ExtraFile] = []
     for index, item in enumerate(extra_payload):
-        required = {"source", "destination", "purpose"}
-        if (
-            not isinstance(item, dict)
-            or not required <= set(item)
-            or set(item) - required - {"attribution_source"}
-        ):
+        if not isinstance(item, dict) or set(item) != {"source", "destination", "purpose"}:
             raise ArxivPackageError(
-                f"extra_files[{index}] requires source, destination, and purpose; "
-                "only attribution_source is optional"
+                f"extra_files[{index}] must contain only source, destination, and purpose"
             )
         purpose = item["purpose"]
         if not isinstance(purpose, str) or not purpose.strip():
             raise ArxivPackageError(f"extra_files[{index}].purpose must be a nonempty string")
-        attribution_source = (
-            _relative_path(item["attribution_source"], f"extra_files[{index}].attribution_source")
-            if "attribution_source" in item else None
-        )
-        destination = _relative_path(item["destination"], f"extra_files[{index}].destination")
-        if attribution_source is not None and destination.suffix != ".txt":
-            raise ArxivPackageError("consolidated attribution requires a .txt destination")
         extra_files.append(
             ExtraFile(
                 source=_relative_path(item["source"], f"extra_files[{index}].source"),
-                destination=destination,
+                destination=_relative_path(
+                    item["destination"], f"extra_files[{index}].destination"
+                ),
                 purpose=purpose.strip(),
-                attribution_source=attribution_source,
             )
         )
 
@@ -1470,33 +1457,6 @@ def validate_archive(
         return tuple(path.as_posix() for path in members)
 
 
-def consolidate_attribution(notice: str, contributors: str, source_name: str) -> str:
-    """Inline a reviewed contributor list without copying its comments or Markdown."""
-
-    reference = f"(see {source_name})"
-    if notice.count(reference) != 1:
-        raise ArxivPackageError(f"license must contain exactly one {reference} attribution reference")
-    visible = re.sub(r"<!--.*?-->", "", contributors, flags=re.DOTALL)
-    names: list[str] = []
-    for line in visible.splitlines():
-        line = line.strip()
-        if not line or re.fullmatch(r"#{1,6} [^<>]+", line):
-            continue
-        match = re.fullmatch(r"- \[([^\[\]<>]+)\]\(https://[^\s()]+\)", line)
-        name = match[1] if match else line[2:] if line.startswith("- ") else ""
-        if not name.strip() or re.search(r"[\[\]<>`*\\]", name):
-            raise ArxivPackageError(
-                "attribution source must contain only headings and contributor-name bullets "
-                "(plain text or HTTPS links); review its format before packaging"
-            )
-        names.append(name.strip())
-    if not names:
-        raise ArxivPackageError("attribution source contains no contributor names")
-    return notice.replace(reference, "(see contributor attribution below)").rstrip() + (
-        "\n\nContributor attribution\n\n" + "\n".join(f"- {name}" for name in names) + "\n"
-    )
-
-
 def package_from_recorder(
     config: ArxivConfig,
     tex_system_roots: Sequence[Path] | None = None,
@@ -1524,21 +1484,6 @@ def package_from_recorder(
             frozenset(item.destination for item in config.extra_files),
             submission_date or date.today(),
         )
-        for item in config.extra_files:
-            if item.attribution_source is None:
-                continue
-            _, attribution = _canonical_project_file(
-                config.project_root, item.attribution_source, "attribution source"
-            )
-            staged_notice = staging_root / item.destination
-            staged_notice.write_text(
-                consolidate_attribution(
-                    staged_notice.read_text(encoding="utf-8"),
-                    attribution.read_text(encoding="utf-8"),
-                    item.attribution_source.name,
-                ),
-                encoding="utf-8",
-            )
         write_deterministic_zip(staging_root, members, archive)
     if archive.stat().st_size > config.max_archive_bytes:
         archive.unlink()

@@ -23,8 +23,12 @@
     {
       "source": "LICENSE.md",
       "destination": "LICENSE.txt",
-      "purpose": "license notice and consolidated attribution for MIT-licensed template source",
-      "attribution_source": "CONTRIBUTORS.md"
+      "purpose": "license notice for MIT-licensed template source"
+    },
+    {
+      "source": "CONTRIBUTORS.md",
+      "destination": "CONTRIBUTORS.md",
+      "purpose": "contributor attribution referenced by the template license notice"
     }
   ],
   "strip_comment_extensions": [
