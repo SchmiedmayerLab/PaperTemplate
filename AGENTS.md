@@ -134,6 +134,7 @@ Examples include an external-validation plan, implementation package, benchmark,
 - Keep each logical TODO on one source line.
 - Do not use `\\` for ordinary prose wrapping.
 - Use semantic commands instead of repeated visual formatting.
+- Preserve standard title, author, `\maketitle`, and `abstract` markup; isolate visual changes in the presentation profile or venue adapter.
 - Escape LaTeX special characters, including `\%`, `\&`, `_`, and `#`.
 - Use `--` for numeric ranges in LaTeX source.
 - Keep section files under `paper/sections/` with stable numeric prefixes.
@@ -263,6 +264,7 @@ Follow `project/guides/reproducibility-workflow.md` for the required layout and 
 - Add a visual only when it makes an important relationship easier to understand.
 - Give each figure one clear scientific purpose.
 - Make labels readable at final publication size and use accessible colors.
+- Provide meaningful image descriptions through `\includegraphics[alt={...}]` when supported by the target TeX release; inspect HTML conversion separately from PDF compilation.
 - Captions should identify the sample, comparison, metric, uncertainty display, and bounded takeaway.
 - Define abbreviations in each figure or table according to venue requirements.
 - Keep editable conceptual figure sources under `paper/figures/source/`.
@@ -413,9 +415,15 @@ The primary agent must synthesize findings, resolve conflicts, inspect the final
 - Bibliography regeneration: `make references`.
 - Local compliance checks: `make compliance`.
 - Final checks: `make submission-check`.
+- Minimal arXiv source package and isolated rebuild: `make arxiv`.
+- Nonpublishing arXiv smoke test and reference-type check: `make arxiv-check`.
 - Clean LaTeX auxiliary files: `make clean`.
 
 Treat LaTeX errors, unresolved references, missing citations, undeclared artifacts, bibliography drift, and failed reproducibility checks as blockers.
+Build an arXiv upload from the recorder-derived dependency set constrained by `project/submission/arxiv.json`; never package the repository through a broad copy-and-exclude rule.
+Sanitize only staged copies, keep `main.tex` at the archive root, and compile the extracted archive without access to repository files before treating it as uploadable.
+Freeze submission dates in the package while preserving the authoring source, verify theorem reference names under the target TeX release, and keep the packaged license notice self-contained.
+Do not treat pixel equivalence as proof that unused macros, binary metadata, links, or HTML output are free of private content or accessibility problems.
 Inspect relevant warnings rather than accepting a build solely because a PDF exists.
 Recompute quantitative results from preserved artifacts whenever possible.
 If the required artifacts are absent, retain an explicit verification TODO and do not describe the result as independently reproduced.

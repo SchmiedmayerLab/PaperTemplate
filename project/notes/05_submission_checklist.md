@@ -50,5 +50,10 @@ SPDX-License-Identifier: MIT
 - [ ] No TODOs, placeholders, comments, tracked changes, clipped content, broken references, or missing glyphs remain.
 - [ ] Headings, floats, captions, equations, references, and page breaks are readable.
 - [ ] The exact upload files were opened after export.
+- [ ] The arXiv ZIP, when applicable, contains only recorder-derived dependencies allowed by `project/submission/arxiv.json` and compiles after isolated extraction.
+- [ ] The arXiv-generated PDF and processing log were reviewed before submission completion.
+- [ ] The archived date is fixed, reference names are correct, and the packaged legal notice is self-contained and accurate.
+- [ ] Every packaged source file, binary asset, embedded metadata field, and link was reviewed for internal or private content; PDF equivalence is not a privacy audit.
+- [ ] Meaningful figures have alt text, and arXiv HTML was reviewed when available; PDF compilation alone does not verify accessibility.
 - [ ] The submitted commit, release identifiers, artifact checksums, venue, date, and manuscript identifier are recorded.
 - [ ] The accepted-manuscript and publication-record archival plan is documented.

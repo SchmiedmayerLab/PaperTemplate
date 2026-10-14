@@ -35,8 +35,21 @@ FORMULAIC_PATTERN = re.compile(
     r"\b(?:unlock|game-changing|paradigm shift|seamlessly|at scale)\b|\bthis creates a gap\b",
     re.IGNORECASE,
 )
+INTERNAL_SOURCE_PATTERN = re.compile(
+    r"\\begin\{comment\}|\\iffalse\b|\\if0\b|\\(?:todo|fixme|marginpar)\b",
+    re.IGNORECASE,
+)
 WORD_PATTERN = re.compile(r"\b[\w'-]+\b")
 LONG_SENTENCE_REVIEW_WORDS = 35
+SUBMISSION_METADATA_SENTINELS = (
+    "Working Title: A Specific and Bounded Scientific Contribution",
+    "First Author",
+    "Second Author",
+    "Working Short Title",
+    "corresponding.author@stanford.edu",
+    "github.com/organization/repository",
+    "keyword one; keyword two; keyword three",
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -71,6 +84,10 @@ def resolve_include(source: Path, include: str) -> Path:
     return candidate
 
 
+def submission_metadata_sentinels(text: str) -> tuple[str, ...]:
+    return tuple(sentinel for sentinel in SUBMISSION_METADATA_SENTINELS if sentinel in text)
+
+
 def main() -> int:
     args = parse_args()
     errors: list[str] = []
@@ -86,7 +103,7 @@ def main() -> int:
             if not stripped or stripped.startswith("%"):
                 continue
             location = source_location(path, line_number)
-            if TODO_PATTERN.search(raw_line) and path.name != "commands.tex":
+            if TODO_PATTERN.search(raw_line) and path.name != "draft-commands.tex":
                 message = f"{location}: unresolved draft marker"
                 (errors if args.submission else warnings).append(message)
             if ABSOLUTE_PATH_PATTERN.search(raw_line):
@@ -105,6 +122,8 @@ def main() -> int:
             if FORMULAIC_PATTERN.search(prose):
                 message = f"{location}: formulaic or promotional phrase requires a concrete replacement"
                 (errors if args.submission else warnings).append(message)
+            if args.submission and INTERNAL_SOURCE_PATTERN.search(raw_line):
+                errors.append(f"{location}: internal-only LaTeX construct must be resolved before submission")
             word_count = len(WORD_PATTERN.findall(prose))
             if (
                 word_count > LONG_SENTENCE_REVIEW_WORDS
@@ -141,6 +160,12 @@ def main() -> int:
     metadata = (PROJECT_ROOT / "paper" / "setup" / "metadata.tex").read_text(encoding="utf-8")
     if args.submission and "\\paperdrafttrue" in metadata:
         errors.append("paper/setup/metadata.tex: switch \\paperdrafttrue to \\paperdraftfalse for submission")
+    if args.submission:
+        for sentinel in submission_metadata_sentinels(metadata):
+            errors.append(
+                "paper/setup/metadata.tex: replace exact template sentinel before submission: "
+                + repr(sentinel)
+            )
 
     for warning in warnings:
         print(f"WARNING: {warning}")

@@ -5,8 +5,9 @@
 PYTHON := PYTHONDONTWRITEBYTECODE=1 python3
 SUBFILE ?= paper/sections/10_introduction.tex
 PREVIEW := paper/preprint-preview.tex
+ARXIV_DATE ?=
 
-.PHONY: all ci doctor submodules submodule-check pdf preview-pdf subfile subfile-clean check reproducibility-check reproduce submission-check references word-count license-check links compliance clean distclean
+.PHONY: all ci doctor submodules submodule-check pdf preview-pdf subfile subfile-clean check tex-check reproducibility-check reproduce submission-check arxiv arxiv-check references word-count license-check links compliance clean distclean
 
 all: check reproduce pdf
 
@@ -50,8 +51,18 @@ submission-check:
 	$(PYTHON) tools/scripts/check_project.py --submission
 	$(PYTHON) tools/scripts/regenerate_bib_from_references.py --check
 	$(PYTHON) tools/scripts/check_reproducibility.py --submission --run
+	$(PYTHON) tools/scripts/check_tex_references.py
 	latexmk -C main.tex
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+
+arxiv:
+	$(PYTHON) tools/scripts/package_arxiv.py $(if $(ARXIV_DATE),--submission-date "$(ARXIV_DATE)")
+
+tex-check:
+	$(PYTHON) tools/scripts/check_tex_references.py
+
+arxiv-check: tex-check
+	$(PYTHON) tools/scripts/package_arxiv.py --smoke-test $(if $(ARXIV_DATE),--submission-date "$(ARXIV_DATE)")
 
 references:
 	$(PYTHON) tools/scripts/regenerate_bib_from_references.py --in-place

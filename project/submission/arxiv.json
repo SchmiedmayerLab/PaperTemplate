@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "entrypoint": "main.tex",
+  "compiler": "pdflatex",
+  "texlive_version": "2025",
+  "recorder": "build/main.fls",
+  "allowed_roots": [
+    "main.tex",
+    "paper/setup",
+    "paper/sections",
+    "paper/supplement",
+    "paper/figures/generated",
+    "paper/tables/generated",
+    "paper/venue"
+  ],
+  "generated_files": [
+    {
+      "source": "build/main.bbl",
+      "destination": "main.bbl"
+    }
+  ],
+  "extra_files": [
+    {
+      "source": "LICENSE.md",
+      "destination": "LICENSE.txt",
+      "purpose": "license notice for MIT-licensed template source"
+    }
+  ],
+  "strip_comment_extensions": [
+    ".tex",
+    ".bbl",
+    ".sty",
+    ".cls",
+    ".clo",
+    ".def",
+    ".cfg",
+    ".bst",
+    ".bbx",
+    ".cbx",
+    ".lbx",
+    ".fd",
+    ".ldf",
+    ".ltx",
+    ".pgf",
+    ".tikz",
+    ".gls",
+    ".ind",
+    ".nls"
+  ],
+  "copy_extensions": [
+    ".pdf",
+    ".png",
+    ".jpg",
+    ".jpeg"
+  ],
+  "archive": "output/arxiv/manuscript-arxiv.zip",
+  "max_archive_bytes": 52428800,
+  "max_uncompressed_bytes": 262144000,
+  "compile_timeout_seconds": 300
+}

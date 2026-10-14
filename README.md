@@ -31,9 +31,9 @@ The paper's article profile, domain guidance, section structure, and venue adapt
 7. Declare generated figures and tables in `research/reproducibility/pipeline.json`.
 8. Draft one sentence per physical source line in `paper/sections/`.
 9. Add references through `tools/scripts/add_reference.py` rather than editing generated `references.bib`.
-10. Run `make all` while drafting and `make submission-check` before final circulation.
+10. Run `make all` while drafting, `make submission-check` before final circulation, and `make arxiv` for a checked arXiv source ZIP.
 
-Required local tools are Python 3.10 or newer and a current TeX distribution with `latexmk` and BibTeX.
+Required local tools are Python 3.10 or newer, a current TeX distribution with `latexmk` and BibTeX, and Ghostscript for arXiv render comparison.
 Run `make doctor` to verify the TeX Live packages used by the default preprint presentation.
 The repository scripts use only the Python standard library.
 REUSE and Linkspector are optional locally and enforced by CI when the repository is hosted in the SchmiedmayerLab organization.
@@ -114,6 +114,7 @@ make subfile SUBFILE=paper/sections/10_introduction.tex
 make references
 make compliance
 make submission-check
+make arxiv
 make clean
 ```
 
@@ -122,6 +123,19 @@ The design specimen is written to `build/preprint-preview.pdf`.
 The `subfile` target changes into the source directory before compiling and writes its output to `build/`.
 Use that target rather than invoking `latexmk paper/sections/<file>.tex` from the repository root.
 Build outputs, derived artifacts, local source material, restricted data, and downloaded article PDFs are ignored to avoid stale results, repository bloat, and accidental redistribution.
+
+## arXiv source package
+
+Run `make arxiv` after the manuscript passes the final submission checks.
+The command builds a minimal ZIP from the compiler's recorded manuscript dependencies and the explicit path policy in `project/submission/arxiv.json`.
+It strips manuscript comments only in a temporary staged copy, includes the matching `main.bbl` instead of the full bibliography database, recompiles the extracted ZIP in isolation, and requires its rendered pages to match the repository build pixel for pixel.
+The resulting archive, inventory, and SHA-256 checksum are written under `output/arxiv/`.
+The staged source freezes the default `\today` date; use `make arxiv ARXIV_DATE=2026-10-13` to select an explicit release date without editing the manuscript.
+Use `make arxiv-check` for a nonpublishing packaging and reference-label smoke test, including while the template contains draft placeholders.
+
+The allowlist is intentionally narrower than the repository.
+Project notes, research material, tools, CI configuration, editable figure sources, unused figures, and build artifacts cannot enter the ZIP merely because they exist in the checkout.
+See `project/guides/arxiv-submission.md` for current arXiv requirements, configuration, licensing cautions, and the final upload review steps.
 
 ## Preprint presentation
 
@@ -132,6 +146,9 @@ Source Sans Pro is limited to metadata, running elements, and figure labels.
 The near-monochrome palette uses Stanford cardinal for small navigational cues and links.
 The standard green ORCID mark appears only beside authors with a configured ORCID iD.
 The presentation contains no institutional logos, decorative icons, proprietary fonts, or copied publisher assets.
+The title and abstract occupy a dedicated opening page, with a date header and rule aligned to the running headers on later pages.
+`\paperstartmaintext` starts the main text on a new page in the preprint profile and leaves pagination unchanged in venue-controlled builds.
+References also start on a new page in the preprint profile, after any pending figures and tables.
 
 Edit the semantic fields in `paper/setup/metadata.tex` rather than changing the title block directly.
 Record a verified ORCID iD for each author who has one; an empty ORCID field remains available as a placeholder and renders no icon.

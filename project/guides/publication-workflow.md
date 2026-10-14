@@ -70,8 +70,9 @@ Keep the preprint presentation and the publisher presentation as separate build 
 1. Resolve all TODOs and switch `\paperdrafttrue` to `\paperdraftfalse`.
 2. Run `make submission-check`, which reproduces declared artifacts and rebuilds from a clean state.
 3. Render the PDF to images and inspect every page.
-4. Check the exact exported files, not only the source repository.
-5. Record the submitted commit, manuscript identifier, venue, date, and artifact checksums in the decision log.
+4. For an arXiv submission, review `project/guides/arxiv-submission.md` and run `make arxiv`.
+5. Check the exact exported files, not only the source repository.
+6. Record the submitted commit, manuscript identifier, venue, date, and artifact checksums in the decision log.
 
 ## 9. Revise without losing context
 

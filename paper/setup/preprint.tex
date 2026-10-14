@@ -66,28 +66,28 @@
 \titlespacing*{\subsubsection}{0pt}{0.95\baselineskip plus 0.15\baselineskip minus 0.10\baselineskip}{0.24\baselineskip}
 \titlespacing*{\paragraph}{0pt}{0.8\baselineskip}{0.5em}
 \pretocmd{\section}{\Needspace{5\baselineskip}}{}{}
-\pretocmd{\subsection}{\Needspace{4\baselineskip}}{}{}
+% Preserve the no-break state after a section immediately followed by a subsection.
+% An unconditional Needspace here can strand the parent heading on the prior page.
+\makeatletter
+\pretocmd{\subsection}{\if@nobreak\else\Needspace{4\baselineskip}\fi}{}{}
+\makeatother
 
 \newcommand{\preprintseparator}{\hspace{0.62em}\textcolor{paperrule}{\textperiodcentered}\hspace{0.62em}}
-\newcommand{\preprinttoprule}{%
-  \noindent
-  \textcolor{paperrule}{\rule{\textwidth}{0.45pt}}%
+\newcommand{\preprintdateline}{%
+  \sffamily\fontsize{8.7}{10.5}\selectfont\color{papermuted}%
+  \ifdefempty{\paperbrand}{}{\paperbrand\preprintseparator}%
+  \ifdefempty{\paperversion}{}{\paperversion}%
+  \ifdefempty{\paperdate}{}{\ifdefempty{\paperversion}{}{\preprintseparator}\paperdate}%
 }
 \newif\ifpreprintmetadata
 
-\renewcommand{\makepaperfrontmatter}{%
+\renewcommand{\paperstartmaintext}{\clearpage}
+
+\renewcommand{\maketitle}{%
   \thispagestyle{preprintfirst}%
+  % Keep the title near its original position while the date and rule use the header.
+  \vspace*{0.15in}%
   \begingroup
-  \noindent
-  \hfill
-  {\sffamily\fontsize{8.7}{10.5}\selectfont\color{papermuted}%
-    \ifdefempty{\paperbrand}{}{\paperbrand\preprintseparator}%
-    \ifdefempty{\paperversion}{}{\paperversion}%
-    \ifdefempty{\paperdate}{}{\ifdefempty{\paperversion}{}{\preprintseparator}\paperdate}%
-  }%
-  \par\vspace{0.48em}
-  \preprinttoprule
-  \par\vspace{1.38em}
   {\raggedright\bfseries\fontsize{25}{28.5}\selectfont\color{paperink}\papertitle\par}
   \ifdefempty{\papersubtitle}{}{%
     \vspace{0.42em}
@@ -127,7 +127,7 @@
   \endgroup
 }
 
-\renewenvironment{paperabstract}
+\renewenvironment{abstract}
   {%
     \par\vspace{1.10em}
     \noindent\textcolor{paperrule}{\rule{\textwidth}{0.5pt}}
@@ -164,8 +164,9 @@
 }
 \fancypagestyle{preprintfirst}{%
   \fancyhf{}
+  \fancyhead[R]{\preprintdateline}
   \fancyfoot[C]{\sffamily\footnotesize\color{papermuted}\thepage}
-  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\headrulewidth}{0.4pt}
   \renewcommand{\footrulewidth}{0pt}
 }
 \fancypagestyle{plain}{%
@@ -194,4 +195,5 @@
   \pagestyle{preprint}
 }
 
-\AtBeginEnvironment{thebibliography}{\thispagestyle{preprint}}
+% Flush pending floats and begin references on a fresh page in the preprint profile.
+\AtBeginEnvironment{thebibliography}{\clearpage\thispagestyle{preprint}}

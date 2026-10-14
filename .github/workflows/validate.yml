@@ -75,6 +75,11 @@ jobs:
             build/main.pdf
             build/preprint-preview.pdf
           if-no-files-found: error
+      - name: Smoke-test arXiv source packaging with TeX Live 2025
+        uses: xu-cheng/texlive-action@v3
+        with:
+          texlive_version: 2025
+          run: make arxiv-check
 
   reuse:
     name: REUSE Compliance

@@ -4,13 +4,20 @@
 
 \providecommand{\paperdocumentclass}{article}
 \providecommand{\paperclassoptions}{11pt}
+% Overleaf's static checker cannot expand these class-selection macros.
+% Suppress only this editor diagnostic; the LaTeX compiler still validates it.
+%%begin novalidate
 \documentclass[\paperclassoptions]{\paperdocumentclass}
+%%end novalidate
 
 \input{paper/setup/profile}
 \input{paper/setup/packages}
 \input{paper/setup/optional-packages}
 \input{paper/setup/metadata}
 \input{paper/setup/commands}
+\ifpaperdraft
+  \input{paper/setup/draft-commands}
+\fi
 \input{paper/setup/acronyms}
 \ifpaperpreprintlayout
   \input{paper/setup/preprint}
@@ -23,12 +30,14 @@
 
 \begin{document}
 
-\makepaperfrontmatter
+\maketitle
 
 \subfile{paper/sections/00_abstract}
 
 % Treat the abstract as a standalone acronym unit.
 \glsresetall
+
+\paperstartmaintext
 
 \subfile{paper/sections/10_introduction}
 \subfile{paper/sections/20_related_work}
