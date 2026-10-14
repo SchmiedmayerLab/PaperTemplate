@@ -1,0 +1,55 @@
+% SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)
+%
+% SPDX-License-Identifier: MIT
+
+% Compilation-only specimen; never included in a manuscript upload.
+\documentclass{article}
+\input{paper/setup/profile}
+\input{paper/setup/packages}
+\input{paper/setup/optional-packages}
+
+% The section-counter alias follows arXiv's documented TeX Live 2025 workaround.
+% Shared counters need an explicit environment-specific type as well.
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\AddToHook{env/theorem/begin}{\crefalias{section}{theorem}}
+\AddToHook{env/lemma/begin}{\crefalias{section}{lemma}\crefalias{theorem}{lemma}}
+
+\begin{document}
+\section{Reference types}
+\label{sec:specimen}
+\begin{equation}
+  1 + 1 = 2
+  \label{eq:specimen}
+\end{equation}
+\begin{figure}[ht]
+  \centering\rule{1cm}{1cm}
+  \caption{A compilation-test figure.}
+  \label{fig:specimen}
+\end{figure}
+\begin{table}[ht]
+  \centering
+  \caption{A compilation-test table.}
+  \label{tab:specimen}
+  \begin{tabular}{cc}
+    \toprule
+    Input & Output \\
+    \midrule
+    1 & 2 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\begin{theorem}
+  \label{thm:specimen}
+  A compilation-test theorem.
+\end{theorem}
+\begin{lemma}
+  \label{lem:specimen}
+  A compilation-test lemma with a shared counter.
+\end{lemma}
+\begin{theorem}
+  \label{thm:after-lemma}
+  The shared-counter alias does not leak to the next theorem.
+\end{theorem}
+See \cref{sec:specimen}, \cref{eq:specimen}, \cref{fig:specimen}, \cref{tab:specimen}, \cref{thm:specimen}, \cref{lem:specimen}, and \cref{thm:after-lemma}.
+\end{document}

@@ -13,10 +13,12 @@
     {\nobreak\hspace{0.22em}\orcidlink{#1}}%
 }
 
-% Presentation hooks let a preprint profile or venue adapter change front matter,
-% abstract styling, keywords, and bibliography style without editing section files.
+% Compatibility aliases for existing papers. New content uses the standard
+% \maketitle command and abstract environment for semantic source markup.
 \newcommand{\makepaperfrontmatter}{\maketitle}
 \newenvironment{paperabstract}{\begin{abstract}}{\end{abstract}}
+% The preprint profile starts the main text on a new page; venue classes retain control.
+\newcommand{\paperstartmaintext}{}
 \newcommand{\paperkeywordsblock}{%
   \ifdefempty{\paperkeywords}{}{%
     \par\medskip
@@ -24,11 +26,3 @@
   }%
 }
 \newcommand{\paperbibliographystyle}{unsrtnat}
-
-\ifpaperdraft
-  \newcommand{\papertodo}[1]{\textcolor{draftred}{\textbf{[TODO: #1]}}}
-\else
-  \newcommand{\papertodo}[1]{\PackageError{paper-template}{Unresolved TODO in final mode}{Resolve the TODO before compiling a submission artifact.}}
-\fi
-
-\newcommand{\placeholder}[1]{\papertodo{#1}}

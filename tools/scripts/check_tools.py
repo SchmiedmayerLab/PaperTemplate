@@ -12,7 +12,7 @@ import shutil
 import subprocess
 
 
-REQUIRED = ("python3", "latexmk", "bibtex", "kpsewhich")
+REQUIRED = ("python3", "latexmk", "bibtex", "kpsewhich", "gs")
 OPTIONAL = ("texcount", "reuse", "linkspector")
 REQUIRED_TEX_FILES = (
     "XCharter.sty",

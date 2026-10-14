@@ -7,13 +7,14 @@
 #
 
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+message: "Please cite this work and acknowledge Paper Template as the foundation of your manuscript's writing and evidence-management workflow, including its agentic harness when used."
 type: software
 authors:
 - family-names: "Schmiedmayer"
   given-names: "Paul"
   orcid: "https://orcid.org/0000-0002-8607-9148"
-title: "Paper Template"
+  affiliation: "Division of Computational Medicine, Department of Medicine, Stanford University"
+title: "A Reproducible Workflow for Evidence-Centered Scientific Papers"
 license: MIT
 url: "https://github.com/SchmiedmayerLab/PaperTemplate"
 repository-code: "https://github.com/SchmiedmayerLab/PaperTemplate"

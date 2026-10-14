@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
 3. Preserve third-party attribution with a file header, `.license` sidecar, or narrow `REUSE.toml` annotation.
 4. Create a branch for venue adaptation when the generic manuscript must remain available.
 5. Create a thin venue root that defines `\papervenuebuild`, `\paperdocumentclass`, `\paperclassoptions`, and any venue-specific `\papernatbiboptions` before it inputs `main.tex`.
-6. Replace front matter through the semantic hooks in `paper/setup/commands.tex` and overrides in `paper/setup/venue.tex`.
+6. Adapt the standard `\maketitle` command and `abstract` environment through the official class and `paper/setup/venue.tex`; keep title and author metadata in their standard commands.
 7. Disable conflicting shared packages in `paper/setup/packages.tex`; do not silently load two competing implementations.
 8. Map the abstract, section order, declarations, references, figures, tables, and supplement to venue requirements.
 9. Replace the drafting bibliography style with the official style.
