@@ -70,6 +70,8 @@ Record the underlying lesson rather than only the wording of a temporary TODO.
 When maintaining the reusable template itself, keep manuscript decision, feedback, and evidence logs empty apart from headings and reusable instructions.
 Document current template behavior in the guides and README rather than recording template-development history in starter notes.
 Populate these logs only after instantiating the template for a manuscript; retain intentional examples and their source-derived reference inventory.
+The two PNGs and PDF under `project/assets/previews/` are committed documentation snapshots, not research outputs.
+Regenerate them with `make readme-previews` after changing the design specimen or its presentation dependencies; never edit the snapshots manually.
 
 Select the article profile in `project/notes/00_project_brief.md` before restructuring the manuscript.
 Use `project/guides/article-profiles.md` and `project/guides/domain-checklists.md` as conditional guidance.

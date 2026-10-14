@@ -6,8 +6,11 @@ PYTHON := PYTHONDONTWRITEBYTECODE=1 python3
 SUBFILE ?= paper/sections/10_introduction.tex
 PREVIEW := paper/preprint-preview.tex
 ARXIV_DATE ?=
+README_PREVIEW_DIR ?= project/assets/previews
+# Stable documentation date; ordinary manuscript builds continue to use today.
+README_PREVIEW_EPOCH := 1791936000
 
-.PHONY: all ci doctor submodules submodule-check pdf preview-pdf subfile subfile-clean check tex-check reproducibility-check reproduce submission-check arxiv arxiv-check references word-count license-check links compliance clean distclean
+.PHONY: all ci doctor submodules submodule-check pdf preview-pdf readme-previews subfile subfile-clean check tex-check reproducibility-check reproduce submission-check arxiv arxiv-check references word-count license-check links compliance clean distclean
 
 all: check reproduce pdf
 
@@ -27,6 +30,12 @@ pdf:
 
 preview-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error $(PREVIEW)
+
+readme-previews:
+	SOURCE_DATE_EPOCH=$(README_PREVIEW_EPOCH) FORCE_SOURCE_DATE=1 TZ=UTC latexmk -g -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build/readme-preview -auxdir=build/readme-preview $(PREVIEW)
+	mkdir -p "$(README_PREVIEW_DIR)"
+	cp build/readme-preview/preprint-preview.pdf "$(README_PREVIEW_DIR)/preprint-preview.pdf"
+	gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r96 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -dFirstPage=1 -dLastPage=2 "-sOutputFile=$(README_PREVIEW_DIR)/page-%d.png" "$(README_PREVIEW_DIR)/preprint-preview.pdf"
 
 subfile:
 	latexmk -cd -pdf -interaction=nonstopmode -halt-on-error -file-line-error -auxdir=../../build -outdir=../../build $(SUBFILE)
