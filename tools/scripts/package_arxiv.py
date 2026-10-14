@@ -1249,12 +1249,14 @@ def _isolated_environment(sandbox: Path) -> dict[str, str]:
     return environment
 
 
-def _read_compile_log(root: Path, entrypoint: Path, process_output: str) -> str:
+def _read_compile_log(root: Path, entrypoint: Path) -> str:
+    """Read the final TeX pass, excluding transient warnings from earlier passes."""
+
     expected = root / entrypoint.with_suffix(".log")
     candidates = [expected] if expected.is_file() else sorted(root.rglob(entrypoint.stem + ".log"))
     if not candidates:
         raise ArxivPackageError("isolated compilation did not produce a LaTeX log")
-    return process_output + "\n" + candidates[-1].read_text(encoding="utf-8", errors="replace")
+    return candidates[-1].read_text(encoding="utf-8", errors="replace")
 
 
 def validate_compile_log(log_text: str) -> None:
@@ -1423,7 +1425,7 @@ def validate_archive(
                 f"isolated source ZIP compilation failed with exit code {process.returncode}\n"
                 + combined_output[-4000:]
             )
-        log_text = _read_compile_log(extraction_root, config.entrypoint, combined_output)
+        log_text = _read_compile_log(extraction_root, config.entrypoint)
         validate_compile_log(log_text)
         packaged_pdf = extraction_root / config.entrypoint.with_suffix(".pdf")
         if not packaged_pdf.is_file():

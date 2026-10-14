@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -37,6 +38,7 @@ from package_arxiv import (
     sha256,
     strip_latex_comments,
     submission_build_environment,
+    validate_archive,
     validate_rendered_equivalence,
 )
 
@@ -126,6 +128,71 @@ class PackageArxivTests(unittest.TestCase):
         (self.root / "build" / "main.fls").write_text(
             "\n".join(lines) + "\n", encoding="utf-8"
         )
+
+    def _validate_mock_compile(
+        self,
+        final_log: str | None,
+        *,
+        process_output: str = "",
+        returncode: int = 0,
+    ) -> tuple[str, ...]:
+        config = load_config(self.root, self._write_config())
+        archive = self.base / "compiled.zip"
+        with zipfile.ZipFile(archive, "w") as bundle:
+            bundle.writestr("main.tex", "Manuscript source\n")
+
+        def compile_archive(command, *, cwd, **kwargs):
+            if final_log is not None:
+                (cwd / "main.log").write_text(final_log, encoding="utf-8")
+            (cwd / "main.pdf").write_bytes(b"mock PDF")
+            (cwd / "main.fls").write_text(
+                "INPUT main.tex\nOUTPUT main.pdf\nOUTPUT main.log\n",
+                encoding="utf-8",
+            )
+            return subprocess.CompletedProcess(command, returncode, process_output, "")
+
+        with (
+            patch("package_arxiv.subprocess.run", side_effect=compile_archive),
+            patch("package_arxiv.discover_tex_system_roots", return_value=(self.system_root,)),
+        ):
+            return validate_archive(archive, config)
+
+    def test_resolved_intermediate_warnings_do_not_fail_archive_validation(self) -> None:
+        intermediate = (
+            "Package natbib Warning: There were undefined citations.\n"
+            "LaTeX Warning: Reference `section' on page 1 undefined.\n"
+            "No file main.bbl.\n"
+        )
+        self.assertEqual(
+            self._validate_mock_compile(
+                "Output written on main.pdf.\n", process_output=intermediate,
+            ),
+            ("main.tex",),
+        )
+
+    def test_final_log_errors_still_fail_archive_validation(self) -> None:
+        for message in (
+            "Package natbib Warning: There were undefined citations.",
+            "LaTeX Warning: There were undefined references.",
+            "LaTeX Warning: Citation `missing' on page 1 undefined.",
+            "LaTeX Warning: Reference `missing' on page 1 undefined.",
+            "No file main.bbl.",
+            "I couldn't open database file references.bib",
+            "Emergency stop",
+            "Fatal error occurred",
+        ):
+            with self.subTest(message=message), self.assertRaisesRegex(
+                ArxivPackageError, "isolated compilation log reports",
+            ):
+                self._validate_mock_compile(message)
+
+    def test_nonzero_compiler_exit_fails_even_with_a_clean_final_log(self) -> None:
+        with self.assertRaisesRegex(ArxivPackageError, "exit code 12"):
+            self._validate_mock_compile("Output written on main.pdf.\n", returncode=12)
+
+    def test_successful_compiler_must_produce_a_final_log(self) -> None:
+        with self.assertRaisesRegex(ArxivPackageError, "did not produce a LaTeX log"):
+            self._validate_mock_compile(None, process_output="Output written on main.pdf.")
 
     def test_strip_comments_preserves_tex_semantics_and_literal_percent(self) -> None:
         source = (

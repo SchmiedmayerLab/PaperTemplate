@@ -29,10 +29,13 @@ Upload the ZIP, select `main.tex` as the only top-level file, select PDFLaTeX, i
 
 The generic template intentionally retains draft sentinels and unresolved section prompts.
 CI therefore exercises the lower-level packager as a TeX Live 2025 smoke test without publishing its ZIP as an artifact.
+This job runs independently of the TeX Live 2026 PDF builds, with its own checkout and regenerated artifacts.
 Run the same checks locally with `make arxiv-check`.
 This command compiles a reference-label specimen and verifies section, equation, figure, table, theorem, and shared-counter lemma types before testing packaging.
 `make arxiv` delegates to the Python entry point's strict default path, which runs the submission gate before creating a candidate upload.
 The explicit `--smoke-test` mode validates in temporary storage and never publishes an upload-named archive.
+The isolated build must exit successfully and produce a final LaTeX log without unresolved citations, references, or fatal errors.
+Temporary warnings from earlier compilation passes do not invalidate a successfully resolved final pass.
 
 The optional `--check` mode executes TeX from an existing ZIP and is only for archives produced from trusted project source.
 Do not use it to inspect an untrusted download; use a disposable container or virtual machine for that task.

@@ -75,23 +75,24 @@ jobs:
             build/main.pdf
             build/preprint-preview.pdf
           if-no-files-found: error
+
+  arxiv:
+    name: Validate arXiv Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Reproduce public artifacts
+        run: make reproduce
       - name: Smoke-test arXiv source packaging with TeX Live 2025
         uses: xu-cheng/texlive-action@v3
         with:
           texlive_version: 2025
           run: make arxiv-check
-
-  reuse:
-    name: REUSE Compliance
-    uses: SchmiedmayerLab/.github/.github/workflows/reuse.yml@v0.5
-
-  actionlint:
-    name: Lint GitHub Actions Workflows
-    uses: SchmiedmayerLab/.github/.github/workflows/actionlint.yml@v0.5
-
-  markdown-links:
-    name: Check Markdown Links
-    permissions:
-      contents: read
-      pull-requests: read
-    uses: SchmiedmayerLab/.github/.github/workflows/markdown-links.yml@v0.5

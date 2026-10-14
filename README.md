@@ -202,6 +202,13 @@ The same root can set `\paperdocumentclass` and `\paperclassoptions` before it i
 Do not infer current venue requirements from an old example submission.
 Do not apply the repository's MIT license to publisher files, external data, downloaded publications, or other third-party assets.
 
+## Continuous integration
+
+Repository checks, TeX Live 2026 PDF builds, and TeX Live 2025 arXiv validation run in parallel with independent checkouts.
+The Repository Standards workflow runs licensing, Markdown link, workflow lint, and repository-surface checks once.
+Require `Repository Checks`, `Build LaTeX Manuscript`, `Validate arXiv Package`, and all four `Standards / ...` checks in the main-branch ruleset.
+When renaming or consolidating jobs, update the required check names without weakening the corresponding validation or other merge protections.
+
 ## Repository-local paper skills
 
 The folders under `tools/skills/` use the Codex skill format.
