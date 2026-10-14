@@ -311,6 +311,12 @@ The bibliography is source-derived:
 Do not hand-edit generated `references.bib` when a source citation asset can be corrected.
 Never run a broad reference operation that deletes unrecognized folders.
 
+## Template Attribution
+
+Retain a concise acknowledgment of Paper Template in `paper/sections/90_acknowledgments.tex` and cite `schmiedmayer2026papertemplate`.
+Credit its actual role in manuscript preparation; mention agent assistance only when used, and avoid promotional claims.
+Keep venue-required AI disclosures separate, and preserve the template citation when adapting `CITATION.cff` for a new paper.
+
 ## Feedback and Revision Workflow
 
 1. Read all relevant comments before editing.

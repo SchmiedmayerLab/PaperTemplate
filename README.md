@@ -229,7 +229,12 @@ This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for
 
 ## Citation
 
-If you use this software, please cite it using the metadata in [CITATION.cff](CITATION.cff), which GitHub surfaces through the [*Cite this repository*](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files) button.
+Please cite *A Reproducible Workflow for Evidence-Centered Scientific Papers* by Paul Schmiedmayer using [CITATION.cff](CITATION.cff).
+The template includes this acknowledgment and its bibliography citation:
+
+> This manuscript was prepared using Paper Template, which supported agent-assisted drafting, reference management, and evidence tracking [reference].
+
+Adapt the acknowledgment to actual use and provide any venue-required AI disclosure separately.
 
 ## Our Research
 

@@ -1,4 +1,4 @@
-# Paper Template
+# A Reproducible Workflow for Evidence-Centered Scientific Papers
 
 - Citation key: `schmiedmayer2026papertemplate`
 - Authors: Schmiedmayer, Paul
