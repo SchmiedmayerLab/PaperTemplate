@@ -67,6 +67,7 @@ jobs:
           args: -pdf -interaction=nonstopmode -halt-on-error -file-line-error
           texlive_version: 2026
           post_compile: |
+            python3 tools/scripts/check_latex_log.py build/main.log build/preprint-preview.log
             make subfile SUBFILE=paper/sections/10_introduction.tex
             make readme-previews README_PREVIEW_DIR=build/readme-assets
       - name: Upload preprint PDFs
@@ -99,5 +100,5 @@ jobs:
           texlive_version: 2025
           run: |
             set -e
-            python3 -m unittest discover -s tools/tests -p 'test_package_arxiv.py'
+            python3 -m unittest discover -s tools/tests
             make arxiv-check

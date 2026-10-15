@@ -19,18 +19,7 @@
       "destination": "main.bbl"
     }
   ],
-  "extra_files": [
-    {
-      "source": "LICENSE.md",
-      "destination": "LICENSE.txt",
-      "purpose": "license notice for MIT-licensed template source"
-    },
-    {
-      "source": "CONTRIBUTORS.md",
-      "destination": "CONTRIBUTORS.md",
-      "purpose": "contributor attribution referenced by the template license notice"
-    }
-  ],
+  "extra_files": [],
   "strip_comment_extensions": [
     ".tex",
     ".bbl",

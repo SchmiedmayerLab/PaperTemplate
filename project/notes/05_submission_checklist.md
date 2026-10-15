@@ -52,7 +52,8 @@ SPDX-License-Identifier: MIT
 - [ ] The exact upload files were opened after export.
 - [ ] The arXiv ZIP, when applicable, contains only recorder-derived dependencies allowed by `project/submission/arxiv.json` and compiles after isolated extraction.
 - [ ] The arXiv-generated PDF and processing log were reviewed before submission completion.
-- [ ] The archived date is fixed, reference names are correct, and the packaged legal notice is self-contained and accurate.
+- [ ] The archived date is fixed and reference names are correct.
+- [ ] The manuscript license is selected in arXiv; any input-specific notice obligations are reviewed and required extras explicitly configured.
 - [ ] Every packaged source file, binary asset, embedded metadata field, and link was reviewed for internal or private content; PDF equivalence is not a privacy audit.
 - [ ] Meaningful figures have alt text, and arXiv HTML was reviewed when available; PDF compilation alone does not verify accessibility.
 - [ ] The submitted commit, release identifiers, artifact checksums, venue, date, and manuscript identifier are recorded.

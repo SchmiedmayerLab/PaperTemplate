@@ -27,18 +27,22 @@ submodule-check:
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+	$(PYTHON) tools/scripts/check_latex_log.py build/main.log
 
 preview-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error $(PREVIEW)
+	$(PYTHON) tools/scripts/check_latex_log.py build/$(notdir $(PREVIEW:.tex=.log))
 
 readme-previews:
 	SOURCE_DATE_EPOCH=$(README_PREVIEW_EPOCH) FORCE_SOURCE_DATE=1 TZ=UTC latexmk -g -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build/readme-preview -auxdir=build/readme-preview $(PREVIEW)
+	$(PYTHON) tools/scripts/check_latex_log.py build/readme-preview/$(notdir $(PREVIEW:.tex=.log))
 	mkdir -p "$(README_PREVIEW_DIR)"
 	cp build/readme-preview/preprint-preview.pdf "$(README_PREVIEW_DIR)/preprint-preview.pdf"
 	gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r96 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -dFirstPage=1 -dLastPage=2 "-sOutputFile=$(README_PREVIEW_DIR)/page-%d.png" "$(README_PREVIEW_DIR)/preprint-preview.pdf"
 
 subfile:
-	latexmk -cd -pdf -interaction=nonstopmode -halt-on-error -file-line-error -auxdir=../../build -outdir=../../build $(SUBFILE)
+	BIBINPUTS="$(CURDIR):$$BIBINPUTS" latexmk -cd -pdf -interaction=nonstopmode -halt-on-error -file-line-error -auxdir=../../build -outdir=../../build $(SUBFILE)
+	$(PYTHON) tools/scripts/check_latex_log.py build/$(notdir $(SUBFILE:.tex=.log))
 
 subfile-clean:
 	latexmk -cd -C -auxdir=../../build -outdir=../../build $(SUBFILE)
@@ -63,6 +67,7 @@ submission-check:
 	$(PYTHON) tools/scripts/check_tex_references.py
 	latexmk -C main.tex
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+	$(PYTHON) tools/scripts/check_latex_log.py build/main.log
 
 arxiv:
 	$(PYTHON) tools/scripts/package_arxiv.py $(if $(ARXIV_DATE),--submission-date "$(ARXIV_DATE)")

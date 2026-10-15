@@ -59,6 +59,8 @@ make pdf
 
 Connect each reported claim, figure, and table to its pipeline step in `project/notes/02_evidence_inventory.md`.
 Inspect the generated run record at `build/reproducibility-run.json`.
+An empty pipeline validates the template structure but reproduces no scientific artifacts.
+Report completed and skipped steps explicitly; a successful check or PDF build is not evidence that reported measurements were independently reproduced.
 Confirm that the manuscript references the declared output rather than a stale copy.
 
 ## 6. Conduct an independent reproduction

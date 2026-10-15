@@ -26,3 +26,16 @@
   }%
 }
 \newcommand{\paperbibliographystyle}{unsrtnat}
+% A standalone subfile does not execute main.tex's bibliography commands.
+% The standalone build target supplies the repository bibliography search path.
+\ifSubfilesClassLoaded{%
+  \newif\ifpaperstandalonecitations
+  \expandafter\pretocmd\csname NAT@sort@cites\endcsname{\global\paperstandalonecitationstrue}{}{}%
+  \pretocmd{\nocite}{\global\paperstandalonecitationstrue}{}{}%
+  \AtEndDocument{%
+    \ifpaperstandalonecitations
+      \bibliographystyle{\paperbibliographystyle}%
+      \bibliography{references}%
+    \fi
+  }%
+}{}

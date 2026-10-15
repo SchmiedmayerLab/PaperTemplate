@@ -382,6 +382,7 @@ def execute(root: Path, steps: list[dict[str, Any]], payload: dict[str, Any], su
         "schema_version": 1,
         "started_at": datetime.now(timezone.utc).isoformat(),
         "environment": payload.get("environment"),
+        "scope": "declared_steps" if steps else "no_steps_declared",
         "submodules": submodule_status_records(root),
         "steps": [],
     }
@@ -445,6 +446,8 @@ def main() -> int:
             print(f"Reproduction failed: {len(execution_errors)} errors")
             return 1
         print(f"Executed {len(steps)} declared pipeline steps")
+        if not steps:
+            print("No pipeline steps declared; no scientific artifacts were regenerated.")
     print(f"Reproducibility check: 0 errors, {len(warnings)} warnings")
     return 0
 
