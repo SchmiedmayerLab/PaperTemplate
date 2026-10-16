@@ -35,11 +35,27 @@ This command compiles a reference-label specimen and verifies section, equation,
 `make arxiv` delegates to the Python entry point's strict default path, which runs the submission gate before creating a candidate upload.
 The explicit `--smoke-test` mode validates in temporary storage and never publishes an upload-named archive.
 The isolated build must exit successfully and produce a final LaTeX log without unresolved citations, references, or fatal errors.
+The ordinary manuscript, design-preview, and standalone-section build targets check their final logs too.
+Standalone sections append a bibliography only when they cite sources.
+Cross-section references still require their targets to be available in the standalone build; include or import the required reference context rather than suppressing unresolved-reference warnings.
 Temporary warnings from earlier compilation passes do not invalidate a successfully resolved final pass.
 
 The optional `--check` mode executes TeX from an existing ZIP and is only for archives produced from trusted project source.
 Do not use it to inspect an untrusted download; use a disposable container or virtual machine for that task.
 The checker limits compressed and extracted size and applies a compilation timeout, but these controls are not a security sandbox.
+
+## Submission metadata and confirmation
+
+Keep a submission record under `project/notes/`, outside the upload ZIP.
+Before uploading, record the approved title, author order, abstract, primary category, cross-lists, comments, and manuscript license.
+Record optional journal-reference and DOI fields only when they apply to the manuscript; do not copy the template's DOI into those fields.
+Associate the record with the source commit, ZIP checksum, compiler, and TeX Live release used for the upload.
+
+Compare the saved metadata with arXiv's final preview and inspect its generated PDF and processing log.
+Review HTML when available and record any review limitation.
+Uploading files or compiling successfully does not complete the submission.
+After the author approves final submission, retain arXiv's confirmation, submission ID, date, and reported status.
+Add the public arXiv identifier when assigned; do not treat a temporary submission ID as a published identifier.
 
 ## Why the package uses an allowlist
 
@@ -85,7 +101,7 @@ The isolated compilation and rendered-PDF comparison remain required after the p
 
 ## Included and excluded material
 
-The ZIP includes only recorded manuscript dependencies, declared generated files, and explicitly reviewed license and attribution files.
+The default ZIP includes only recorded manuscript dependencies and declared generated files.
 Typical payload files are `.tex`, a matching `.bbl`, project-local class or style files when unavoidable, and final PDF, PNG, or JPEG figures referenced by the manuscript.
 PDFLaTeX requires figures to be in a supported final format because arXiv does not perform figure conversion during compilation.
 Every recorder-derived input must be classified either as a TeX-language file whose comments are removed or as a final binary asset listed in `copy_extensions`.
@@ -106,14 +122,14 @@ An unused macro can contain private text, and a figure can contain hidden layers
 Pixel equivalence does not inspect PDF metadata, hyperlink destinations, attachments, or HTML semantics.
 Review every packaged source file, asset, and link before uploading; remove internal content from its source when the sanitizer cannot classify it safely.
 
-The default archive maps `LICENSE.md` to `LICENSE.txt` so removing inline SPDX comments does not remove the template's MIT notice.
-This notice covers the repository and template source; it does not select or replace the submission license chosen in arXiv's interface.
-Authors must confirm that the arXiv license, publisher policy, figure rights, and all redistributed source files are compatible.
-The archive also includes `CONTRIBUTORS.md`, which the license notice references for contributor attribution.
-Update both records for new authors or differently licensed material; do not infer a manuscript's license from the template's license.
-Do not strip a copyright or license notice from a third-party class, style, bibliography style, or font without preserving every notice its license requires.
-Prefer the version already provided by arXiv's TeX Live installation.
-If a third-party file must be uploaded, verify its redistribution terms and declare any required notice as a reviewed legal file.
+Select the manuscript license in arXiv's submission interface.
+The packager does not assign a manuscript license, synthesize a license notice, or copy the repository's license and contributor files into the archive by default.
+Its `extra_files` list is empty unless authors explicitly configure additional files with a source, destination, and review purpose.
+Repository licensing and the license selected for the manuscript remain separate decisions.
+Review the rights and notice requirements of any source, figure, class, style, bibliography style, or font included in the upload.
+Prefer packages already provided by arXiv's TeX Live installation.
+When redistribution requires a separate notice, preserve it through a reviewed `extra_files` entry; selecting an arXiv license does not override those input-specific terms.
+The packager copies explicitly reviewed extras verbatim rather than converting or assigning their licensing terms.
 
 ## arXiv compatibility notes
 
@@ -129,6 +145,12 @@ Section files use the `subfiles` class and therefore contain their own `\documen
 The arXiv interface may list them as possible top-level files.
 Select only `main.tex`.
 Do not add a hand-written `00README.json` for a normal interactive submission; arXiv creates that record from choices made in its upload interface.
+
+The upload scanner may report macro names such as `\paperdocumentclass` or `\paperbibliographystyle` as missing files, or flag a conditional input such as `paper/setup/draft-commands.tex` that final mode does not load.
+Inspect the flagged source and confirm whether the active build requires that input.
+Do not add dummy files or upload draft-only content to silence a scanner warning.
+Proceed only after the actual arXiv compilation succeeds, its final log has no unresolved dependencies, citations, or references, and the generated PDF is correct.
+A genuinely missing dependency must be fixed and the package rebuilt.
 
 arXiv advises against `\today` because a later rebuild can change the displayed date.
 The template retains `\today` as its authoring default.

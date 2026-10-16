@@ -186,7 +186,7 @@ class PackageArxivTests(unittest.TestCase):
             "Fatal error occurred",
         ):
             with self.subTest(message=message), self.assertRaisesRegex(
-                ArxivPackageError, "isolated compilation log reports",
+                ArxivPackageError, "compilation log reports",
             ):
                 self._validate_mock_compile(message)
 
@@ -398,6 +398,16 @@ class PackageArxivTests(unittest.TestCase):
             find_internal_source_constructs("visible\\endinput\n\\verb|PRIVATE|\n"),
         )
 
+    def test_empty_extras_do_not_upload_repository_license_or_contributors(self) -> None:
+        self._write_standard_sources()
+        self._write_recorder()
+        for name in ("LICENSE.md", "LICENSE.txt", "CONTRIBUTORS.md"):
+            (self.root / name).write_text("Repository-only notice\n", encoding="utf-8")
+        config = load_config(self.root, self._write_config(extra_files=[]))
+        result = package_from_recorder(config, [self.system_root])
+        with zipfile.ZipFile(result.archive) as bundle:
+            self.assertEqual(bundle.namelist(), ["main.bbl", "main.tex", "paper/section.tex"])
+
     def test_exact_contents_comment_removal_reports_and_determinism(self) -> None:
         self._write_standard_sources()
         (self.root / "references.bib").write_text("must not upload\n", encoding="utf-8")
@@ -421,6 +431,7 @@ class PackageArxivTests(unittest.TestCase):
                 bundle.namelist(),
                 ["LICENSE.txt", "main.bbl", "main.tex", "paper/section.tex"],
             )
+            self.assertEqual(bundle.read("LICENSE.txt"), b"License notice\n")
             self.assertNotIn("private header", bundle.read("main.tex").decode())
             self.assertNotIn("remove me", bundle.read("paper/section.tex").decode())
             self.assertNotIn("generated note", bundle.read("main.bbl").decode())

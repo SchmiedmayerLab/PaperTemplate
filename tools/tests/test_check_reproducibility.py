@@ -4,13 +4,16 @@
 
 from __future__ import annotations
 
+import contextlib
 import csv
+import io
 import hashlib
 import json
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
@@ -68,6 +71,16 @@ class ReproducibilityCheckTests(unittest.TestCase):
         errors, warnings, _, _ = check_reproducibility.validate_project(root)
         self.assertEqual(errors, [])
         self.assertEqual(warnings, [])
+
+    def test_empty_run_reports_that_no_scientific_artifacts_were_regenerated(self) -> None:
+        root = self.make_project()
+        output = io.StringIO()
+        with mock.patch.object(sys, "argv", ["check_reproducibility.py", "--project-root", str(root), "--run"]), contextlib.redirect_stdout(output):
+            self.assertEqual(check_reproducibility.main(), 0)
+        self.assertIn("no scientific artifacts were regenerated", output.getvalue())
+        record = json.loads((root / check_reproducibility.RUN_RECORD_PATH).read_text(encoding="utf-8"))
+        self.assertEqual(record["scope"], "no_steps_declared")
+        self.assertEqual(record["steps"], [])
 
     def test_foundational_data_requires_manifest_and_checksum(self) -> None:
         root = self.make_project()

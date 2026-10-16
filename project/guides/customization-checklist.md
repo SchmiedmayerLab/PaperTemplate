@@ -15,6 +15,8 @@ Several LaTeX and manuscript choices are deliberate drafting defaults that must 
 - [ ] Record a verified ORCID iD for each author who has one; leave the field empty rather than inventing an identifier.
 - [ ] Update `CONTRIBUTORS.md`, copyright years, and project-specific licensing decisions.
 - [ ] Update `CITATION.cff` for the new manuscript while preserving the template's original title and authorship in `research/literature/schmiedmayer2026papertemplate/citation.bib` and retaining its manuscript citation.
+- [ ] Replace template README badges, repository links, citation instructions, and status claims with the manuscript repository identity; do not reuse the template DOI as the paper DOI.
+- [ ] Keep manuscript authors, ordering, affiliations, correspondence, PDF metadata, and `CITATION.cff` synchronized after authorship changes.
 - [ ] Use the formal template title in a brief, accurate acknowledgment; list specific contributions only when needed and provide any venue-required AI disclosure separately.
 - [ ] Select an article profile and remove irrelevant sections, subsections, declarations, and TODOs.
 - [ ] Remove unused acronyms, semantic commands, packages, figures, tables, and supplement files.

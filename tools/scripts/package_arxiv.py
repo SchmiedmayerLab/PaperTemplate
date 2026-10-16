@@ -1278,7 +1278,7 @@ def validate_compile_log(log_text: str) -> None:
     failures = sorted({pattern.pattern for pattern in LOG_FAILURE_PATTERNS if pattern.search(log_text)})
     if failures:
         raise ArxivPackageError(
-            "isolated compilation log reports missing citations, references, or a fatal error: "
+            "compilation log reports missing citations, references, or a fatal error: "
             + "; ".join(failures)
         )
 

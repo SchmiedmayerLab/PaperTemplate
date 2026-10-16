@@ -348,6 +348,8 @@ Update a paper skill only when feedback establishes a reusable procedure for tha
 Do not post or reply to pull-request comments on behalf of the author.
 Resolve a review thread without a reply only when the user explicitly authorizes resolution and the underlying change or disposition is complete.
 Do not delete a TODO or comment until the manuscript, figure, table, or source asset visibly resolves it.
+Mark open LaTeX author-review comments with `% TODO: ` and name the missing evidence or decision.
+Removing comments from a staged upload does not resolve the underlying issue; report any remaining author-reviewed limitations separately.
 
 ## Response Letters and Editorial Documents
 
@@ -397,6 +399,7 @@ After reorganizing, reread each assembled section as continuous prose.
 - Keep downloaded full text ignored unless redistribution is authorized.
 - Check journal copyright or license terms before releasing manuscript source under the repository license.
 - Distinguish public artifacts, controlled-access artifacts, and unavailable artifacts precisely.
+- Centralize release dates, access procedures, and changing availability details in the availability section. Describe the contribution directly elsewhere, while keeping openness claims consistent with the stated access conditions.
 - Use persistent versions, commits, releases, licenses, checksums, and access conditions in availability statements.
 - Do not send confidential or protected content to external services without explicit authorization and appropriate governance.
 
@@ -437,7 +440,9 @@ The primary agent must synthesize findings, resolve conflicts, inspect the final
 Treat LaTeX errors, unresolved references, missing citations, undeclared artifacts, bibliography drift, and failed reproducibility checks as blockers.
 Build an arXiv upload from the recorder-derived dependency set constrained by `project/submission/arxiv.json`; never package the repository through a broad copy-and-exclude rule.
 Sanitize only staged copies, keep `main.tex` at the archive root, and compile the extracted archive without access to repository files before treating it as uploadable.
-Freeze submission dates in the package while preserving the authoring source, verify theorem reference names under the target TeX release, and keep the packaged license notice self-contained.
+Freeze submission dates in the package while preserving the authoring source and verify theorem reference names under the target TeX release.
+Select the manuscript license in arXiv; do not synthesize or copy repository licensing files into the package by default.
+Review input-specific redistribution and notice requirements, and explicitly configure any required extra files.
 Do not treat pixel equivalence as proof that unused macros, binary metadata, links, or HTML output are free of private content or accessibility problems.
 Inspect relevant warnings rather than accepting a build solely because a PDF exists.
 Recompute quantitative results from preserved artifacts whenever possible.

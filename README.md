@@ -63,6 +63,7 @@ Once the first build works, follow the [customization checklist](project/guides/
 Write one sentence per source line and run `make all` while drafting.
 Before submission, run `make submission-check`; use `make arxiv` to create and validate a source ZIP.
 The Python scripts use only the standard library.
+Standalone section builds include the citations used by that section; final-log checks reject unresolved citations and references even when a PDF was created.
 REUSE and Linkspector are optional locally and enforced by the configured GitHub workflows.
 
 ## Repository map
@@ -106,6 +107,7 @@ make preview-pdf
 make subfile SUBFILE=paper/sections/10_introduction.tex
 ```
 
+An empty pipeline runs zero scientific steps; passing repository checks alone does not establish reproduction of a paper's results.
 The runner writes input and output checksums to the ignored `build/reproducibility-run.json` record.
 The full policy and clean-clone verification process are documented in `project/guides/reproducibility-workflow.md`.
 
@@ -157,6 +159,8 @@ Regenerate them from the design specimen with `make readme-previews`; do not edi
 
 Run `make arxiv` after the manuscript passes the final submission checks.
 The command builds a minimal ZIP from the compiler's recorded manuscript dependencies and the explicit path policy in `project/submission/arxiv.json`.
+Select the manuscript license in arXiv; the default ZIP does not include or generate repository license or contributor files.
+Review input-specific notice obligations and explicitly configure additional files only when needed.
 It strips manuscript comments only in a temporary staged copy, includes the matching `main.bbl` instead of the full bibliography database, recompiles the extracted ZIP in isolation, and requires its rendered pages to match the repository build pixel for pixel.
 The resulting archive, inventory, and SHA-256 checksum are written under `output/arxiv/`.
 The staged source freezes the default `\today` date; use `make arxiv ARXIV_DATE=2026-10-13` to select an explicit release date without editing the manuscript.
