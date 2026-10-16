@@ -44,6 +44,19 @@ The optional `--check` mode executes TeX from an existing ZIP and is only for ar
 Do not use it to inspect an untrusted download; use a disposable container or virtual machine for that task.
 The checker limits compressed and extracted size and applies a compilation timeout, but these controls are not a security sandbox.
 
+## Submission metadata and confirmation
+
+Keep a submission record under `project/notes/`, outside the upload ZIP.
+Before uploading, record the approved title, author order, abstract, primary category, cross-lists, comments, and manuscript license.
+Record optional journal-reference and DOI fields only when they apply to the manuscript; do not copy the template's DOI into those fields.
+Associate the record with the source commit, ZIP checksum, compiler, and TeX Live release used for the upload.
+
+Compare the saved metadata with arXiv's final preview and inspect its generated PDF and processing log.
+Review HTML when available and record any review limitation.
+Uploading files or compiling successfully does not complete the submission.
+After the author approves final submission, retain arXiv's confirmation, submission ID, date, and reported status.
+Add the public arXiv identifier when assigned; do not treat a temporary submission ID as a published identifier.
+
 ## Why the package uses an allowlist
 
 The package is assembled from the actual local inputs recorded in `build/main.fls` after a fresh build.
@@ -132,6 +145,12 @@ Section files use the `subfiles` class and therefore contain their own `\documen
 The arXiv interface may list them as possible top-level files.
 Select only `main.tex`.
 Do not add a hand-written `00README.json` for a normal interactive submission; arXiv creates that record from choices made in its upload interface.
+
+The upload scanner may report macro names such as `\paperdocumentclass` or `\paperbibliographystyle` as missing files, or flag a conditional input such as `paper/setup/draft-commands.tex` that final mode does not load.
+Inspect the flagged source and confirm whether the active build requires that input.
+Do not add dummy files or upload draft-only content to silence a scanner warning.
+Proceed only after the actual arXiv compilation succeeds, its final log has no unresolved dependencies, citations, or references, and the generated PDF is correct.
+A genuinely missing dependency must be fixed and the package rebuilt.
 
 arXiv advises against `\today` because a later rebuild can change the displayed date.
 The template retains `\today` as its authoring default.

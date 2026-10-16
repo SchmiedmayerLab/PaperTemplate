@@ -40,6 +40,7 @@ SPDX-License-Identifier: MIT
 - [ ] Reporting guidelines and checklists are complete.
 - [ ] Ethics, consent, funding, conflicts, author contributions, acknowledgments, and AI-assistance statements are correct.
 - [ ] All authors approved the final manuscript and author order.
+- [ ] Approved submission metadata (title, author order, abstract, categories, comments, and manuscript license) are recorded outside the upload ZIP and match the final arXiv preview.
 - [ ] Names, affiliations, ORCIDs, author order, CRediT roles, and corresponding-author details are verified.
 - [ ] Double-blind submissions contain no identifying text, PDF metadata, repository links, acknowledgments, or file names.
 - [ ] The preprint, software, data, and archival-release plan is consistent with venue and funder policies.
@@ -57,4 +58,5 @@ SPDX-License-Identifier: MIT
 - [ ] Every packaged source file, binary asset, embedded metadata field, and link was reviewed for internal or private content; PDF equivalence is not a privacy audit.
 - [ ] Meaningful figures have alt text, and arXiv HTML was reviewed when available; PDF compilation alone does not verify accessibility.
 - [ ] The submitted commit, release identifiers, artifact checksums, venue, date, and manuscript identifier are recorded.
+- [ ] Final submission is confirmed by arXiv; the confirmation and reported status are recorded separately from upload and compilation success.
 - [ ] The accepted-manuscript and publication-record archival plan is documented.
