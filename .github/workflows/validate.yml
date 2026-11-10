@@ -39,9 +39,16 @@ jobs:
             exit 1
           fi
       - name: Install Word conversion tool
+        env:
+          PANDOC_VERSION: '3.13'
+          PANDOC_SHA256: '38aa33b325a2bc96a4c39409631212db55702f564250bcdbead180b3bf646389'
         run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes pandoc
+          curl --fail --location --retry 3 \
+            "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz" \
+            --output "$RUNNER_TEMP/pandoc.tar.gz"
+          printf '%s  %s\n' "$PANDOC_SHA256" "$RUNNER_TEMP/pandoc.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/pandoc.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/pandoc-$PANDOC_VERSION/bin" >> "$GITHUB_PATH"
       - name: Run repository checks
         run: make check
       - name: Reproduce public artifacts

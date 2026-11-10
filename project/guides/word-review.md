@@ -12,6 +12,8 @@ This avoids replacing citation keys, labels, macros, and subsequent local work w
 ## Export for coauthors
 
 Install [Pandoc](https://pandoc.org/installing.html) 3.1 or newer; on macOS, `brew install pandoc` is sufficient.
+On Linux, use an [official release binary](https://github.com/jgm/pandoc/releases), which includes the data files needed for [sandboxed conversion](https://pandoc.org/MANUAL.html#option--sandbox).
+Distribution packages with separate data files can fail with missing translation warnings; CI uses the official Pandoc 3.13 binary.
 The optional Word workflow uses Python's standard library and does not require a TeX installation, Microsoft Word, or a Python document library.
 Run `make contributions` after changing the contributor assignments, and regenerate any figures or tables used by the manuscript.
 Then run:
