@@ -120,6 +120,51 @@ class WordSafetyTests(unittest.TestCase):
     def test_comments_keep_escaped_percent(self):
         self.assertEqual(word.uncomment("Value 10\\% % private\n"), "Value 10\\% \n")
 
+    def test_literal_percent_and_include_commands_are_preserved(self):
+        literal = r"""\verb|total % count \input{missing}| \verb*+10%+
+\begin{verbatim}
+remainder = total % count
+\input {missing}
+\end{verbatim}
+"""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            main = root / "main.tex"
+            main.write_text("% ignore \\verb|misleading\n" + literal + "% trailing comment\n")
+            with patch.object(word, "ROOT", root):
+                sources = set()
+                result = word.flatten(main, sources)
+            self.assertEqual(result, "\n" + literal + "\n")
+            self.assertEqual(sources, {main})
+        self.assertEqual(word.uncomment(literal), literal)
+
+    def test_whitespace_and_parent_relative_includes_are_snapshotted(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            section = root / "sections" / "methods.tex"
+            section.parent.mkdir()
+            table = root / "tables" / "results.tex"
+            table.parent.mkdir()
+            table.write_text("Recorded result.")
+            section.write_text("\\input \n {../tables/results}")
+            main = root / "main.tex"
+            main.write_text(r"\input {sections/methods}")
+            with patch.object(word, "ROOT", root):
+                sources = set()
+                self.assertEqual(word.flatten(main, sources), "Recorded result.")
+                self.assertEqual(sources, {main, section, table})
+                section.write_text(r"\input {../../private}")
+                with self.assertRaisesRegex(ValueError, "outside the project"):
+                    word.flatten(main, set())
+
+    def test_citation_metadata_is_validated_but_fallback_is_exempt(self):
+        fallback = [{"t": "RawInline", "c": ["latex", r"\cite{example}"]}]
+        for field in ("citationPrefix", "citationSuffix"):
+            citation = {"t": "Cite", "c": [[{field: fallback}], fallback]}
+            with self.assertRaisesRegex(ValueError, "Unsupported"):
+                word.validate_ast(citation, set())
+        word.validate_ast({"t": "Cite", "c": [[{"citationPrefix": [], "citationSuffix": []}], fallback]}, set())
+
     def test_cycles_and_missing_includes_fail(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()
@@ -205,6 +250,19 @@ class WordIntegrationTests(unittest.TestCase):
         (self.bundle / "baseline.md").write_text("Changed baseline")
         with self.assertRaisesRegex(ValueError, "modified"):
             word.import_review(self.bundle / "manuscript.docx", self.bundle, self.root / "review")
+
+    def test_citation_locator_types_and_plurals(self):
+        text = word.run_pandoc([
+            "-f", "markdown", "-t", "plain", "--citeproc", "--bibliography", str(self.root / "references.bib"),
+            "--csl", str(self.root / "tools/word/numeric.csl"),
+        ], "[@schmiedmayer2026papertemplate, p. 2]\n\n"
+           "[@schmiedmayer2026papertemplate, pp. 2-3]\n\n"
+           "[@schmiedmayer2026papertemplate, sec. 2]\n\n"
+           "[@schmiedmayer2026papertemplate, chap. 3]\n")
+        self.assertIn("[1, p. 2]", text)
+        self.assertIn("[1, pp. 2–3]", text)
+        self.assertIn("[1, sec. 2]", text)
+        self.assertIn("[1, chap. 3]", text)
 
 
 if __name__ == "__main__":

@@ -15,6 +15,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import uuid
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,7 +26,11 @@ from credit_contributions import check as check_contributions
 ROOT = Path(__file__).resolve().parents[2]
 W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 NS = {"w": W}
-INCLUDE = re.compile(r"\\(?:input|include|subfile)\{([^{}]+)\}")
+INCLUDE = re.compile(r"(?<!\\)\\(?:input|include|subfile)\s*\{([^{}]+)\}")
+TEX_TOKENS = re.compile(
+    r"(?P<literal>\\begin\s*\{(?P<environment>verbatim\*?|Verbatim\*?|lstlisting|minted)\}"
+    r".*?\\end\s*\{(?P=environment)\}|\\verb\*?(?P<delimiter>[^\sA-Za-z]).*?(?P=delimiter))"
+    r"|\\.|(?P<comment>%[^\n]*)", re.DOTALL)
 MAX_DOCX_BYTES = 100 * 1024 * 1024
 
 
@@ -47,8 +52,32 @@ def run_pandoc(args: list[str], text: str | None = None) -> str:
     return result.stdout
 
 
+def prepare_tex(text: str) -> tuple[str, dict[str, str]]:
+    """Remove comments and protect literal text from include expansion."""
+    literals = {}
+    prefix = "WORDLITERAL" + uuid.uuid4().hex
+
+    def replace(match: re.Match) -> str:
+        if match.group("comment") is not None:
+            return ""
+        if match.group("literal") is not None:
+            key = f"{prefix}{len(literals)}END"
+            literals[key] = match[0]
+            return key
+        return match[0]
+
+    return TEX_TOKENS.sub(replace, text), literals
+
+
+def restore_literals(text: str, literals: dict[str, str]) -> str:
+    for key, value in literals.items():
+        text = text.replace(key, value)
+    return text
+
+
 def uncomment(text: str) -> str:
-    return re.sub(r"(?m)(?<!\\)((?:\\\\)*)%[^\n]*", r"\1", text)
+    text, literals = prepare_tex(text)
+    return restore_literals(text, literals)
 
 
 def flatten(path: Path, sources: set[Path], stack: tuple[Path, ...] = ()) -> str:
@@ -56,7 +85,7 @@ def flatten(path: Path, sources: set[Path], stack: tuple[Path, ...] = ()) -> str
     if path in stack:
         raise ValueError(f"Cyclic TeX include: {path.relative_to(ROOT)}")
     sources.add(path)
-    text = uncomment(path.read_text(encoding="utf-8"))
+    text, literals = prepare_tex(path.read_text(encoding="utf-8"))
     if r"\begin{document}" in text:
         text = text.split(r"\begin{document}", 1)[1].rsplit(r"\end{document}", 1)[0]
 
@@ -66,12 +95,14 @@ def flatten(path: Path, sources: set[Path], stack: tuple[Path, ...] = ()) -> str
             raise ValueError(f"Dynamic TeX include needs a Word adapter: {name}")
         if not Path(name).suffix:
             name += ".tex"
-        target = inside(ROOT, name)
-        if not target.is_file():
-            target = inside(ROOT, str(path.parent / name))
+        candidates = [(ROOT / name).resolve(), (path.parent / name).resolve()]
+        allowed = [candidate for candidate in candidates if candidate.is_relative_to(ROOT.resolve())]
+        if not allowed:
+            raise ValueError(f"Path is outside the project: {name}")
+        target = next((candidate for candidate in allowed if candidate.is_file()), allowed[-1])
         return flatten(target, sources, (*stack, path))
 
-    return INCLUDE.sub(include, text)
+    return restore_literals(INCLUDE.sub(include, text), literals)
 
 
 def nodes(value):
@@ -91,6 +122,7 @@ def validate_ast(ast: dict, sources: set[Path]) -> None:
         if isinstance(value, dict):
             # Raw LaTeX inside a parsed citation is the fallback display, not lost text.
             if value.get("t") == "Cite":
+                visit(value["c"][0])
                 return
             if value.get("t") in ("RawInline", "RawBlock"):
                 raise ValueError(f"Unsupported Word content: {value['c']}. Add an adapter in paper/setup/word.tex.")
@@ -246,8 +278,9 @@ def export_bundle(output: Path) -> None:
     if output.exists():
         raise ValueError("Choose a new output directory; review baselines are immutable")
     sources: set[Path] = set()
-    body = flatten(ROOT / "main.tex", sources)
+    body, literals = prepare_tex(flatten(ROOT / "main.tex", sources))
     body = re.sub(r"(\\bibliography\{[^{}]+\})", r"\1\n\\section*{References}\\label{word-references}", body)
+    body = restore_literals(body, literals)
     preamble = "\n".join(flatten(ROOT / name, sources) for name in (
         "paper/setup/metadata.tex", "paper/setup/contributions.tex", "paper/setup/word.tex"))
     text = ("\\documentclass{article}\n" + preamble

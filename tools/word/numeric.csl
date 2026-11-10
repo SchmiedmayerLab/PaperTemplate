@@ -11,7 +11,10 @@
     <sort><key variable="citation-number"/></sort>
     <layout prefix="[" suffix="]" delimiter=", ">
       <text variable="citation-number"/>
-      <text variable="locator" prefix=", p. "/>
+      <group prefix=", " delimiter=" ">
+        <label variable="locator" form="short"/>
+        <text variable="locator"/>
+      </group>
     </layout>
   </citation>
   <bibliography entry-spacing="0" second-field-align="flush">
