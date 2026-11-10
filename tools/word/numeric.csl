@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)
+     SPDX-License-Identifier: MIT -->
+<style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text" default-locale="en-US">
+  <info>
+    <title>Manuscript numeric review</title>
+    <id>https://github.com/SchmiedmayerLab/PaperTemplate/tools/word/numeric</id>
+    <updated>2026-11-04T00:00:00+00:00</updated>
+  </info>
+  <citation collapse="citation-number">
+    <sort><key variable="citation-number"/></sort>
+    <layout prefix="[" suffix="]" delimiter=", ">
+      <text variable="citation-number"/>
+      <text variable="locator" prefix=", p. "/>
+    </layout>
+  </citation>
+  <bibliography entry-spacing="0" second-field-align="flush">
+    <layout suffix=".">
+      <text variable="citation-number" suffix=". "/>
+      <group delimiter=". ">
+        <names variable="author"><name initialize-with=". " and="text"/></names>
+        <text variable="title"/>
+        <text variable="container-title" font-style="italic"/>
+        <group delimiter=", ">
+          <date variable="issued"><date-part name="year"/></date>
+          <text variable="volume"/>
+          <text variable="issue" prefix="(" suffix=")"/>
+          <text variable="page"/>
+          <text variable="publisher"/>
+        </group>
+        <choose><if variable="DOI"><text variable="DOI" prefix="https://doi.org/"/></if>
+          <else><text variable="URL"/></else></choose>
+      </group>
+    </layout>
+  </bibliography>
+</style>

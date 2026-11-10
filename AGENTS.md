@@ -69,6 +69,17 @@ Record the underlying lesson rather than only the wording of a temporary TODO.
 
 When maintaining the reusable template itself, keep manuscript decision, feedback, and evidence logs empty apart from headings and reusable instructions.
 Document current template behavior in the guides and README rather than recording template-development history in starter notes.
+Keep the root README focused on getting started, a linked repository map, and a compact workflow overview.
+Follow the current [Schmiedmayer Lab repository standards](https://github.com/SchmiedmayerLab/.github/blob/main/REPOSITORY_STANDARDS.md) for README structure and badges.
+Place badges immediately below the title and preserve the prescribed Contributing, License, and Our Research sections verbatim.
+For this template, retain the standard Citation paragraph, custom formatted citation, and brief acknowledgment instructions in the README.
+Keep release, commit, and version-specific DOI guidance in the linked customization guide.
+This citation addition is a deliberate exception to the lab's fixed-text guidance; retain the citation-help link and verify it against the pinned repository workflow.
+Keep detailed customization and licensing instructions in linked guides.
+Describe supporting features in a workflow-table row linked to a guide; keep detailed procedures and implementation notes in the relevant guide or directory README.
+Refer to the project as "this template" in prose, using its formal title for citations and introductions that need the full name.
+Reserve the repository name for URLs, paths, and other technical identifiers.
+Describe what a feature does directly; omit generic introductions that merely announce what a table or linked guide contains.
 Populate these logs only after instantiating the template for a manuscript; retain intentional examples and their source-derived reference inventory.
 The two PNGs and PDF under `project/assets/previews/` are committed documentation snapshots, not research outputs.
 Regenerate them with `make readme-previews` after changing the design specimen or its presentation dependencies; never edit the snapshots manually.
@@ -414,6 +425,7 @@ Read a selected skill's `SKILL.md` fully before using it.
 - `paper-reference-curator` maintains source assets and the generated bibliography.
 - `paper-section-refiner` revises one section after strategy and evidence are clear.
 - `paper-consistency-auditor` checks terminology, numbers, claims, citations, reproducibility, and artifacts across the paper.
+- `paper-word-review` reconciles returned Word edits against the export baseline and current LaTeX source.
 
 Follow the active platform's delegation and authorization rules.
 Give each sub-agent a narrow, non-overlapping task, raw target artifacts, relevant source paths, and an output contract.
@@ -431,6 +443,9 @@ The primary agent must synthesize findings, resolve conflicts, inspect the final
 - Full manuscript build: `make pdf`.
 - Standalone section build: `make subfile SUBFILE=paper/sections/<file>.tex`.
 - Bibliography regeneration: `make references`.
+- CRediT contribution generation: `make contributions`; edit `project/contributors.json`, preserve author-confirmation status, and keep the generated LaTeX synchronized.
+- Word review export: `make word`; retain the complete export bundle and share a copy of its DOCX.
+- Returned Word review extraction: `make word-review REVIEWED="returned.docx" BASELINE="output/word/original-export"`; reconcile with the local skill rather than replacing manuscript source with converted LaTeX.
 - Local compliance checks: `make compliance`.
 - Final checks: `make submission-check`.
 - Minimal arXiv source package and isolated rebuild: `make arxiv`.

@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
 ## Verified manuscript support
 
 - `CITATION.cff` gives the citation title *A Reproducible Workflow for Evidence-Centered Scientific Papers* and identifies Paul Schmiedmayer as the author, with ORCID `0000-0002-8607-9148` and the Stanford affiliation recorded there.
-- The citable object is the PaperTemplate software project, licensed under the MIT License, hosted at `https://github.com/SchmiedmayerLab/PaperTemplate`, and archived on Zenodo under the project DOI `10.5281/zenodo.23361126`.
+- The template is licensed under the MIT License, hosted at `https://github.com/SchmiedmayerLab/PaperTemplate`, and archived on Zenodo under the project DOI `10.5281/zenodo.23361126`.
 - The Zenodo record and official BibTeX export were verified on October 14, 2026; the first public release is `0.1.0`.
 - The repository contains the source-first reference workflow described in `project/guides/reference-workflow.md` and implemented under `tools/scripts/`.
 - `AGENTS.md` and `tools/skills/` provide the instructions and bounded writing, reference-management, and review tasks that constitute its agentic writing harness.

@@ -38,6 +38,10 @@ jobs:
             echo "Trailing whitespace found."
             exit 1
           fi
+      - name: Install Word conversion tool
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes pandoc
       - name: Run repository checks
         run: make check
       - name: Reproduce public artifacts

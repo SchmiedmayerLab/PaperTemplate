@@ -36,6 +36,22 @@ Several LaTeX and manuscript choices are deliberate drafting defaults that must 
 - Data and Code Availability, Declarations, Acknowledgments, a separate Conclusion, and a separate Related Work section depend on article type and venue.
 - The repository's MIT license does not automatically cover instantiated manuscript text, publisher files, third-party data, publications, or figures.
 
+## Citing this template
+
+Use the [project DOI](https://doi.org/10.5281/zenodo.23361126) or [CITATION.cff](../../CITATION.cff):
+
+> Schmiedmayer, P. (2026). *A Reproducible Workflow for Evidence-Centered Scientific Papers* [Software]. Zenodo. [https://doi.org/10.5281/zenodo.23361126](https://doi.org/10.5281/zenodo.23361126)
+
+For exact reproduction, also record the release tag or commit; Zenodo provides version-specific DOIs.
+When adapting the template, retain its [source citation](../../research/literature/schmiedmayer2026papertemplate/citation.bib) and brief [manuscript acknowledgment](../../paper/sections/90_acknowledgments.tex), even when replacing [CITATION.cff](../../CITATION.cff) with your paper's metadata.
+Provide any venue-required disclosure separately.
+
+## Licensing
+
+Template code and documentation use the [MIT License](../../LICENSE.md) with [REUSE](https://reuse.software/) file-level metadata.
+Run `make license-check` locally or view the [REUSE service report](https://api.reuse.software/info/github.com/SchmiedmayerLab/PaperTemplate).
+Review separate rights for manuscript text, publisher files, data, and figures before adding them.
+
 ## Venue migration
 
 - [ ] Retrieve the current official class, style, and sample files from the venue.

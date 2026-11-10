@@ -13,7 +13,7 @@ import subprocess
 
 
 REQUIRED = ("python3", "latexmk", "bibtex", "kpsewhich", "gs")
-OPTIONAL = ("texcount", "reuse", "linkspector")
+OPTIONAL = ("texcount", "reuse", "linkspector", "pandoc")
 REQUIRED_TEX_FILES = (
     "XCharter.sty",
     "newtxmath.sty",

@@ -6,11 +6,15 @@ PYTHON := PYTHONDONTWRITEBYTECODE=1 python3
 SUBFILE ?= paper/sections/10_introduction.tex
 PREVIEW := paper/preprint-preview.tex
 ARXIV_DATE ?=
+WORD_OUTPUT ?=
+REVIEWED ?=
+BASELINE ?=
+REVIEW_OUTPUT ?=
 README_PREVIEW_DIR ?= project/assets/previews
 # Stable documentation date; ordinary manuscript builds continue to use today.
 README_PREVIEW_EPOCH := 1791936000
 
-.PHONY: all ci doctor submodules submodule-check pdf preview-pdf readme-previews subfile subfile-clean check tex-check reproducibility-check reproduce submission-check arxiv arxiv-check references word-count license-check links compliance clean distclean
+.PHONY: all ci doctor submodules submodule-check pdf preview-pdf readme-previews subfile subfile-clean check tex-check reproducibility-check reproduce submission-check arxiv arxiv-check references word-count license-check links compliance clean distclean contributions contributions-check word word-review
 
 all: check reproduce pdf
 
@@ -49,6 +53,7 @@ subfile-clean:
 
 check:
 	$(PYTHON) -m unittest discover -s tools/tests
+	$(PYTHON) tools/scripts/credit_contributions.py --check
 	$(PYTHON) tools/scripts/check_project.py
 	$(PYTHON) tools/scripts/check_submodules.py
 	$(PYTHON) tools/scripts/check_reproducibility.py
@@ -61,6 +66,7 @@ reproduce:
 	$(PYTHON) tools/scripts/check_reproducibility.py --run
 
 submission-check:
+	$(PYTHON) tools/scripts/credit_contributions.py --check --submission
 	$(PYTHON) tools/scripts/check_project.py --submission
 	$(PYTHON) tools/scripts/regenerate_bib_from_references.py --check
 	$(PYTHON) tools/scripts/check_reproducibility.py --submission --run
@@ -81,6 +87,18 @@ arxiv-check: tex-check
 references:
 	$(PYTHON) tools/scripts/regenerate_bib_from_references.py --in-place
 	$(PYTHON) tools/scripts/organize_references.py --report-only
+
+contributions:
+	$(PYTHON) tools/scripts/credit_contributions.py
+
+contributions-check:
+	$(PYTHON) tools/scripts/credit_contributions.py --check
+
+word:
+	$(PYTHON) tools/scripts/word_review.py export $(if $(WORD_OUTPUT),--output "$(WORD_OUTPUT)")
+
+word-review:
+	$(PYTHON) tools/scripts/word_review.py import --reviewed "$(REVIEWED)" --baseline "$(BASELINE)" $(if $(REVIEW_OUTPUT),--output "$(REVIEW_OUTPUT)")
 
 word-count:
 	texcount -inc -sum main.tex

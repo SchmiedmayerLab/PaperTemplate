@@ -1,0 +1,47 @@
+% SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)
+% SPDX-License-Identifier: MIT
+\documentclass{article}
+\begin{document}
+\maketitle
+\begin{abstract}
+This illustrative manuscript exercises the Word review workflow with prose, citations, a table, a figure, and editable mathematics.
+It does not report research findings.
+\end{abstract}
+\section{Methods}
+\label{sec:methods}
+The measured value was 10 units.
+
+Notes for reviewers.
+The template provides the workflow~\citep{schmiedmayer2026papertemplate}.
+An inline equation $x^2 + y^2 = z^2$ remains editable in Word.
+\begin{equation}
+\label{eq:mean}
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
+\end{equation}
+\section{Illustrative Outputs}
+See \cref{sec:methods} for the procedure.
+\begin{table}[ht]
+\centering
+\caption{Illustrative values for checking table formatting}
+\label{tab:values}
+\begin{tabular}{lrr}
+\toprule
+Condition & Value & Count \\
+\midrule
+Reference & 10.0 & 12 \\
+Comparison & 12.5 & 12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth,alt={Four illustrative bars with increasing height}]{paper/figures/generated/review-bars.png}
+\caption{Illustrative bars for checking image sizing and caption placement}
+\label{fig:bars}
+\end{figure}
+\section{Declarations}
+\subsection{Author Contributions}
+\papercontributions
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,16 @@
+% SPDX-FileCopyrightText: 2026 Schmiedmayer Lab and the project authors (see CONTRIBUTORS.md)
+% SPDX-License-Identifier: MIT
+
+% Semantic adapters for the Word review copy. Keep manuscript content in its source.
+% Add adapters for paper-specific commands here; unsupported raw TeX stops export.
+\newcommand{\authororcid}[1]{}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\software}[1]{#1}
+\newcommand{\dataset}[1]{#1}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:#1}}
+\newcommand{\placeholder}[1]{[\textbf{TODO:} #1]}
+\newcommand{\papertodo}[1]{[\textbf{TODO:} #1]}
+\newcommand{\paperstartmaintext}{}
+\newcommand{\paperkeywordsblock}{\par\textbf{Keywords:} \paperkeywords}
+\newcommand{\glsresetall}{}
+\newcommand{\paperbibliographystyle}{unsrtnat}

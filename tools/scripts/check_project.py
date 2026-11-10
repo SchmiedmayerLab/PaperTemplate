@@ -64,7 +64,8 @@ def tex_files() -> list[Path]:
         if root.is_file():
             files.add(root)
         elif root.exists():
-            files.update(root.rglob("*.tex"))
+            # Word adapters are conversion code, not part of the LaTeX manuscript.
+            files.update(path for path in root.rglob("*.tex") if path != PROJECT_ROOT / "paper/setup/word.tex")
     return sorted(files)
 
 

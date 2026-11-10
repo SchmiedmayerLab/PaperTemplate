@@ -12,6 +12,7 @@ path = [
     "research/reproducibility/submodules.tsv",
     "project/notes/06_reference_inventory.md",
     "project/submission/arxiv.json",
+    "project/contributors.json",
     "references.bib",
     "research/reproducibility/pipeline.json",
     "project/assets/previews/page-1.png",

@@ -28,6 +28,22 @@ SPDX-License-Identifier: MIT
 11. Inspect warnings and every rendered page for each artifact.
 12. Run the venue checklist and confirm the exact upload package.
 
+## Venue root example
+
+A thin root can select the official class and citation mode before loading the shared [main.tex](../../main.tex):
+
+```tex
+\def\papervenuebuild{}
+\def\paperdocumentclass{publisher-class}
+\def\paperclassoptions{}
+\def\papernatbiboptions{round,authoryear}
+\input{main.tex}
+```
+
+Replace the class and options with the venue's verified requirements.
+Keep licensed publisher files under [paper/venue/](../../paper/venue/) and compatibility code in [venue.tex](../../paper/setup/venue.tex).
+The preprint profile is bypassed as a unit; the scientific sections stay shared.
+
 ## Common migration risks
 
 - Publisher classes may load `natbib`, `hyperref`, caption packages, fonts, or geometry internally.
